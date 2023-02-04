@@ -4,15 +4,21 @@ const gameManager = new GameManager();
 
 export default class Particle {
   constructor() {
-    this.x = Game.isPlay
-      ? gameManager.width
-      : Math.random() * gameManager.width;
-    this.y = Game.isPlay ? Math.random() * gameManager.height : 0;
+    this.x =
+      Game.isPlay && !Game.isGameOver
+        ? gameManager.width
+        : Math.random() * gameManager.width;
+    this.y =
+      Game.isPlay && !Game.isGameOver ? Math.random() * gameManager.height : 0;
     this.xVel = 5;
-    this.yVel = 2;
-    this.w = 4 * gameManager.getScale();
-    this.h = 4 * gameManager.getScale();
-    this.color = "rgba(255,255,255,0.5";
+    this.yVel = !Game.isGameOver ? 2 : 15;
+    this.w = !Game.isGameOver
+      ? 4 * gameManager.getScale()
+      : 6 * gameManager.getScale();
+    this.h = !Game.isGameOver
+      ? 4 * gameManager.getScale()
+      : 6 * gameManager.getScale();
+    this.color = !Game.isGameOver ? "rgba(255,255,255,0.5" : "red";
     this.active = true;
   }
 
@@ -32,6 +38,8 @@ export default class Particle {
   }
 
   update() {
-    Game.isPlay ? (this.x -= this.xVel) : (this.y += this.yVel);
+    Game.isPlay && !Game.isGameOver
+      ? (this.x -= this.xVel)
+      : (this.y += this.yVel);
   }
 }
