@@ -1,19 +1,36 @@
 import GameManager from "./gameManager.js";
-import Player from "./objects/player.js";
+import Player from "./Entities/Player.js";
 import KEYS from "./keys.js";
-import EnemyEasy from "./objects/enemyEasy.js";
-import EnemyAverage from "./objects/enemyAverage.js";
-import EnemyHigh from "./objects/enemyHigh.js";
+import EnemyEasy from "./Entities/EnemyEasy.js";
+import EnemyAverage from "./Entities/EnemyAverage.js";
+import EnemyHigh from "./Entities/EnemyHigh.js";
+import MainMenu from "./UI/Panels/MainMenu.js";
+import ControlsMenu from "./UI/Panels/ControlsMenu.js";
+import { Game, UI } from "./global.js";
+import HUD from "./UI/Panels/HUD.js";
+import GameOverMenu from "./UI/Panels/GameOver.js";
+import HighScoreMenu from "./UI/Panels/HighScoreMenu.js";
+import Bullet from "./Entities/Bullet.js";
+import Particle from "./Entities/Particle.js";
+import DebugMessage from "./UI/DebugMessage.js";
+import localization from "./Localization/Parse.js";
+import LanguageMenu from "./UI/Panels/LanguageMenu.js";
 
-//#region INIT
+//#region Init
 const canvas = document.getElementById("canvas");
 const context = canvas.getContext("2d");
 const gameManager = new GameManager();
 const player = new Player(
   75 * gameManager.getScale(),
-  (gameManager.height / 2) * gameManager.getScale(),
-  "green"
+  (gameManager.height / 2) * gameManager.getScale()
 );
+
+const mainMenuPanel = new MainMenu();
+const highScoreMenu = new HighScoreMenu();
+const languageMenu = new LanguageMenu();
+const controlsMenuPanel = new ControlsMenu();
+const hud = new HUD();
+const gameOverPanel = new GameOverMenu();
 
 let playerData = {
   x: 0,
@@ -21,107 +38,89 @@ let playerData = {
   w: 0,
 };
 
+let keyState = [];
 let delayShoot = 0;
 let Bullets = [];
 let Enemies = [];
 let Particles = [];
-let isPlay = false;
-
-let canvasWidth = gameManager.width;
-let canvasHeight = gameManager.height;
-
-let panelUIIndex = 0;
-let mainMenuIndex = 0;
-let controlsMenuIndex = 0;
-
-function openPanelById(index) {
-  panelUIIndex = index;
-}
-
-function mainMenuSelect() {
-  switch (mainMenuIndex) {
-    case 0:
-      isPlay = true;
-      break;
-    case 2:
-      panelUIIndex = 1;
-      break;
-  }
-}
-
-function controlsMenuSelect() {
-  switch (controlsMenuIndex) {
-    case 0:
-      panelUIIndex = 0;
-      break;
-  }
-}
 
 //#endregion
 
-//#region EVENTS
+//#region Events
 window.addEventListener("load", function () {
-  gameManager.resize(canvas, context, canvasWidth, canvasHeight);
+  gameManager.resize(canvas, context, gameManager.width, gameManager.height);
 });
-
-function drawCanvasMessage(align, text, x, y) {
-  context.font = `20px sans-serif`;
-  context.fillStyle = "gray";
-  context.textAlign = align;
-  context.fillText(text, x, y);
-}
 
 window.addEventListener("resize", function () {
-  gameManager.resize(canvas, context, canvasWidth, canvasHeight);
+  gameManager.resize(canvas, context, gameManager.width, gameManager.height);
 });
 
-window.addEventListener("keydown", function (e) {
-  keyState[event.keyCode] = true;
+window.addEventListener("keydown", (e) => {
+  keyState[e.keyCode] = true;
 
-  if (!isPlay) {
+  if (!Game.isPlay || Game.isGameOver) {
     if (e.keyCode == KEYS.W || e.keyCode == KEYS.ArrowUp) {
-      switch (panelUIIndex) {
+      switch (UI.panelUIIndex) {
         case 0:
-          if (mainMenuIndex > 0) mainMenuIndex--;
+          if (UI.mainMenuIndex > 0) UI.mainMenuIndex--;
           break;
         case 1:
-          if (controlsMenuIndex > 0) controlsMenuIndex--;
+          if (UI.controlsMenuIndex > 0) UI.controlsMenuIndex--;
+          break;
+        case 2:
+          if (UI.languageMenuIndex > 0) UI.languageMenuIndex--;
+          break;
+        case 99:
+          if (UI.gameOverMenuIndex > 0) UI.gameOverMenuIndex--;
           break;
       }
     }
     if (e.keyCode == KEYS.S || e.keyCode == KEYS.ArrowDown) {
-      switch (panelUIIndex) {
+      switch (UI.panelUIIndex) {
         case 0:
-          if (mainMenuIndex < menuText.length - 1) mainMenuIndex++;
+          if (UI.mainMenuIndex < localization.menuText.length - 1)
+            UI.mainMenuIndex++;
+          break;
+        case 2:
+          if (
+            UI.languageMenuIndex <
+            localization.availableLanguagesText.length - 1
+          )
+            UI.languageMenuIndex++;
+          break;
+        case 99:
+          if (UI.gameOverMenuIndex < localization.gameOverText.length - 1)
+            UI.gameOverMenuIndex++;
           break;
       }
     }
     if (e.keyCode == KEYS.Enter) {
-      switch (panelUIIndex) {
+      switch (UI.panelUIIndex) {
         case 0:
-          mainMenuSelect();
+          mainMenuPanel.select();
           break;
         case 1:
-          controlsMenuSelect();
+          highScoreMenu.select();
+          break;
+        case 2:
+          languageMenu.select();
+          break;
+        case 3:
+          controlsMenuPanel.select();
+          break;
+        case 99:
+          gameOverPanel.select();
           break;
       }
     }
   }
 });
-window.addEventListener("keyup", onKeyUp);
+window.addEventListener("keyup", (e) => {
+  keyState[e.keyCode] = false;
+});
 //#endregion
 
-//#region  INPUT
-let keyState = [];
-
-function onKeyDown(event) {
-  keyState[event.keyCode] = true;
-}
-
-function onKeyUp(event) {
-  keyState[event.keyCode] = false;
-}
-
+//#region  Input
 function shoot() {
   if (delayShoot === 0) {
     Bullets.push(
@@ -148,263 +147,6 @@ function inputGame() {
 }
 
 //#endregion
-const backText = "Back to menu";
-const acceptText = "Enter";
-const menuText = ["Play", "High score (soon)", "Controls"];
-
-const UIButton = {
-  space: 70,
-  fontWeight: {
-    normal: "normal",
-    active: "bold",
-  },
-  color: {
-    normal: "white",
-    active: "red",
-  },
-  dot: {
-    space: 30,
-    radius: 5,
-  },
-};
-
-function drawCircle(i, x) {
-  context.beginPath();
-  context.arc(
-    x,
-    gameManager.height / 2 + i * UIButton.space - UIButton.space * 1.5 - 15,
-    UIButton.dot.radius,
-    0,
-    2 * Math.PI,
-    false
-  );
-  context.fillStyle = UIButton.color.active;
-  context.fill();
-}
-
-function drawUIMenu() {
-  for (let i = 0; i < menuText.length; i++) {
-    context.font = `${
-      mainMenuIndex == i
-        ? UIButton.fontWeight.active
-        : UIButton.fontWeight.normal
-    } 45px sans-serif`;
-    context.fillStyle =
-      mainMenuIndex == i ? UIButton.color.active : UIButton.color.normal;
-    context.textAlign = "center";
-    context.fillText(
-      menuText[i],
-      gameManager.width / 2,
-      gameManager.height / 2 + i * UIButton.space - UIButton.space * 1.5
-    );
-
-    console.log(i * UIButton.space);
-
-    if (mainMenuIndex == i) {
-      drawCircle(
-        i,
-        gameManager.width / 2 -
-          context.measureText(menuText[i]).width / 2 -
-          UIButton.dot.space
-      );
-      drawCircle(
-        i,
-        gameManager.width / 2 +
-          context.measureText(menuText[i]).width / 2 +
-          UIButton.dot.space
-      );
-    }
-  }
-}
-
-const keyboardInputText = ["- Keyboard -", "Move - W,S", "Shoot - Spacebar"];
-
-const gamepadInputText = ["- Gamepad (soon) -", "Move - ...", "Shoot - ..."];
-function drawUIConrols() {
-  for (let i = 0; i < keyboardInputText.length; i++) {
-    context.font = `${
-      i == 0
-        ? UIButton.fontWeight.active + " 35px"
-        : UIButton.fontWeight.normal + " 28px"
-    } sans-serif`;
-    context.fillStyle = UIButton.color.normal;
-    context.textAlign = "right";
-    context.fillText(
-      keyboardInputText[i],
-      gameManager.width / 2 - 80,
-      gameManager.height / 2 + (i * UIButton.space) / 1.5 - UIButton.space * 2
-    );
-  }
-  for (let i = 0; i < gamepadInputText.length; i++) {
-    context.font = `${
-      i == 0
-        ? UIButton.fontWeight.active + " 35px"
-        : UIButton.fontWeight.normal + " 28px"
-    } sans-serif`;
-    context.fillStyle = UIButton.color.normal;
-    context.textAlign = "left";
-    context.fillText(
-      gamepadInputText[i],
-      gameManager.width / 2 + 80,
-      gameManager.height / 2 + (i * UIButton.space) / 1.5 - UIButton.space * 2
-    );
-  }
-
-  context.font = `${UIButton.fontWeight.active} 45px sans-serif`;
-  context.fillStyle = UIButton.color.active;
-  context.textAlign = "center";
-  context.fillText(
-    backText,
-    gameManager.width / 2,
-    gameManager.height / 2 + 4 * UIButton.space - UIButton.space * 1.5
-  );
-
-  drawCircle(
-    4,
-    gameManager.width / 2 -
-      context.measureText(backText).width / 2 -
-      UIButton.dot.space
-  );
-
-  drawCircle(
-    4,
-    gameManager.width / 2 +
-      context.measureText(backText).width / 2 +
-      UIButton.dot.space
-  );
-}
-
-const bestScoreTitleText = ["BEST SCORE"];
-function drawUIHighScore() {
-  context.font = `${UIButton.fontWeight.active} 31px sans-serif`;
-  context.fillStyle = UIButton.color.normal;
-  context.textAlign = "center";
-  context.fillText(
-    bestScoreTitleText,
-    gameManager.width / 2,
-    gameManager.height / 2 + (0 * UIButton.space) / 1.5 - UIButton.space * 2
-  );
-
-  context.font = `${UIButton.fontWeight.normal} 30px sans-serif`;
-  context.fillStyle = UIButton.color.normal;
-  context.textAlign = "center";
-  context.fillText(
-    "{YOUR SCORE}",
-    gameManager.width / 2,
-    gameManager.height / 2 + (2 * UIButton.space) / 1.5 - UIButton.space * 2
-  );
-
-  context.font = `${UIButton.fontWeight.active} 45px sans-serif`;
-  context.fillStyle = UIButton.color.active;
-  context.textAlign = "center";
-  context.fillText(
-    backText,
-    gameManager.width / 2,
-    gameManager.height / 2 + 4 * UIButton.space - UIButton.space * 1.5
-  );
-
-  drawCircle(
-    4,
-    gameManager.width / 2 -
-      context.measureText(backText).width / 2 -
-      UIButton.dot.space
-  );
-
-  drawCircle(
-    4,
-    gameManager.width / 2 +
-      context.measureText(backText).width / 2 +
-      UIButton.dot.space
-  );
-}
-
-const safeZone = 10 * gameManager.getScale();
-let healthBarWidth = gameManager.width - safeZone * 2;
-let score = 0;
-
-function drawHUD() {
-  // draw health bar
-  context.fillStyle = "rgba(0,0,0,.15)";
-  context.fillRect(safeZone, safeZone, healthBarWidth, 10);
-  context.fillStyle =
-    player.health <= 33.33 ? "rgb(215,50,50)" : "rgb(5,90,10)";
-  context.fillRect(
-    safeZone,
-    safeZone,
-    (player.health * healthBarWidth) / 100,
-    10
-  );
-
-  // draw score
-  context.font = "30px sans-serif";
-  context.fillStyle = UIButton.color.normal;
-  context.textAlign = "left";
-  context.fillText(score, safeZone, gameManager.height - safeZone);
-}
-
-function Bullet(bullet) {
-  this.active = true;
-  this.color = "rgba(255,0,0,0.8)";
-  this.xVel = -bullet.velX;
-  this.w = 15;
-  this.h = 5;
-  this.x = bullet.x;
-  this.y = bullet.y;
-}
-
-Bullet.prototype.inBounds = function () {
-  return (
-    this.x >= 0 &&
-    this.x <= canvasWidth &&
-    this.y >= 0 &&
-    this.y <= canvasHeight
-  );
-};
-
-Bullet.prototype.draw = function () {
-  context.fillStyle = this.color;
-  context.fillRect(this.x, this.y, this.w, this.h);
-};
-
-Bullet.prototype.update = function () {
-  this.x -= this.xVel;
-  this.active = this.inBounds() && this.active;
-};
-
-Bullet.prototype.die = function () {
-  this.active = false;
-};
-
-function Particle() {
-  this.x = canvasWidth;
-  this.y = Math.random() * canvasHeight;
-  this.xVel = 4;
-  this.yVel = 0;
-  this.w = 4 * gameManager.getScale();
-  this.h = 4 * gameManager.getScale();
-  this.color = "rgba(255,255,255,0.5";
-  this.active = true;
-}
-
-Particle.prototype.inBounds = function () {
-  return (
-    this.x >= 0 &&
-    this.x <= canvasWidth &&
-    this.y >= 0 &&
-    this.y <= canvasHeight
-  );
-};
-
-Particle.prototype.draw = function () {
-  context.fillStyle = this.color;
-  context.fillRect(this.x, this.y, this.w, this.h);
-  this.active = this.active && this.inBounds();
-};
-
-Particle.prototype.update = function () {
-  this.x -= this.xVel;
-};
-
 function collisionCheck(a, b) {
   return (
     a.x < b.x + b.w && a.x + a.w > b.x && a.y < b.y + b.h && a.y + a.h > b.y
@@ -415,7 +157,7 @@ function collisionUpdate() {
   Bullets.forEach(function (bullet) {
     Enemies.forEach(function (enemy) {
       if (collisionCheck(bullet, enemy)) {
-        bullet.die();
+        bullet.destroy();
         enemy.destroy();
       }
     });
@@ -431,7 +173,7 @@ function collisionUpdate() {
 
 //#region UPDATE
 const update = () => {
-  context.clearRect(0, 0, canvasWidth, canvasHeight);
+  context.clearRect(0, 0, gameManager.width, gameManager.height);
 
   inputGame();
   gameManager.area(player);
@@ -447,10 +189,10 @@ const update = () => {
   });
 
   Particles.forEach(function (particle) {
-    particle.draw();
+    particle.draw(context);
   });
 
-  if (isPlay == true) {
+  if (Game.isPlay === true && Game.isGameOver === false) {
     Bullets.forEach(function (bullet) {
       bullet.update();
     });
@@ -460,7 +202,7 @@ const update = () => {
     });
 
     Bullets.forEach(function (bullet) {
-      bullet.draw();
+      bullet.draw(context);
     });
 
     if (delayShoot > 0) {
@@ -470,15 +212,15 @@ const update = () => {
     let positionY = Math.floor(Math.random() * gameManager.height - 200) + 200;
 
     if (Math.random() < 0.02) {
-      Enemies.push(new EnemyEasy(gameManager.width, positionY, "1"));
+      Enemies.push(new EnemyEasy(gameManager.width, positionY));
     }
 
     if (Math.random() < 0.005) {
-      Enemies.push(new EnemyAverage(gameManager.width, positionY, "3"));
+      Enemies.push(new EnemyAverage(gameManager.width, positionY));
     }
 
     if (Math.random() < 0.001) {
-      Enemies.push(new EnemyHigh(gameManager.width, positionY, "3"));
+      Enemies.push(new EnemyHigh(gameManager.width, positionY));
     }
 
     Enemies.forEach(function (enemy) {
@@ -499,47 +241,69 @@ const update = () => {
     playerData.w = player.w;
 
     collisionUpdate();
-    drawHUD();
-    score += 1;
+    hud.draw(context, player);
+    Game.score += 1;
 
     if (player.health <= 0) {
-      isPlay = false;
-      if (
-        confirm(`[TEMPORARY UI]\n\nYOU LOSE!\nScore: ${score}\nRestart?`) ==
-        true
-      ) {
-        window.location.reload();
-      }
+      Game.isGameOver = true;
     }
-  } else {
-    switch (panelUIIndex) {
+  } else if (Game.isGameOver) {
+    if (localStorage.getItem("score") === null) {
+      localStorage.setItem("score", Game.score);
+      Game.myBestScore = Game.score;
+    }
+    if (parseInt(localStorage.getItem("score")) <= Game.score) {
+      localStorage.setItem("score", Game.score);
+      Game.myBestScore = Game.score;
+    }
+    UI.panelUIIndex = 99;
+    gameOverPanel.draw();
+    Bullets = [];
+    Enemies = [];
+    player.health = 100;
+  } else if (!Game.isPlay) {
+    switch (UI.panelUIIndex) {
       case 0:
-        drawUIMenu();
+        mainMenuPanel.draw();
         break;
       case 1:
-        drawUIConrols();
+        highScoreMenu.draw();
+        break;
+      case 2:
+        languageMenu.draw();
+        break;
+      case 3:
+        controlsMenuPanel.draw();
         break;
     }
 
-    drawCanvasMessage(
-      "right",
-      "Developed by Pavel Drobny",
-      canvasWidth - 15,
-      30
-    );
-    drawCanvasMessage(
-      "right",
-      "v0.3.5 (BETA)",
-      canvasWidth - 15,
-      canvasHeight - 15
-    );
-    drawCanvasMessage(
-      "left",
-      "W,S or Arrows - Navigation",
-      15,
-      canvasHeight - 50
-    );
-    drawCanvasMessage("left", "ENTER - Confirm", 15, canvasHeight - 15);
+    new DebugMessage({
+      x: gameManager.width - 15,
+      y: 30,
+      text: localization.dev,
+      align: "right",
+    }).draw(context);
+
+    new DebugMessage({
+      x: gameManager.width - 15,
+      y: gameManager.height - 15,
+      text: localization.version,
+      align: "right",
+    }).draw(context);
+
+    new DebugMessage({
+      x: 15,
+      y: gameManager.height - 50,
+      text: localization.navigation,
+      align: "left",
+    }).draw(context);
+
+    new DebugMessage({
+      x: 15,
+      y: gameManager.height - 15,
+      text: localization.confirm,
+      align: "left",
+    }).draw(context);
   }
 
   requestAnimationFrame(update);

@@ -1,9 +1,7 @@
-import Object from "./base.js";
-import GameManager from "../gameManager.js";
-const gameManager = new GameManager();
+import Object from "./Base.js";
 
 export default class EnemyAverage extends Object {
-  constructor(x, y, color) {
+  constructor(x, y) {
     super();
     this.x = x;
     this.y = y;

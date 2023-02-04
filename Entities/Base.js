@@ -18,7 +18,7 @@ export default class ObjectBase {
     this.tag = "";
   }
 
-   draw(context) {
+  draw(context) {
     context.beginPath();
     context.arc(
       this.x / gameManager.getScale(),
@@ -56,12 +56,12 @@ export default class ObjectBase {
       this.wingHeight * gameManager.getScale()
     );
   }
-   
+
   move() {
     this.x -= 8;
   }
 
-  destroy(){
+  destroy() {
     this.active = false;
   }
 }
