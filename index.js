@@ -121,7 +121,9 @@ function shoot() {
       new Bullet({
         velX: 15,
         x: player.x + player.w / 2,
-        y: player.y + player.h / 2,
+        y:
+          player.y / gameManager.getScale() +
+          (player.h * gameManager.getScale()) / 2,
       })
     );
     delayShoot = 100;
