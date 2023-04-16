@@ -5,11 +5,10 @@ export default class Player extends Object {
     super();
     this.x = x;
     this.y = y;
-    this.w = 55;
-    this.h = 55;
+    this.w = 100
+    this.h = 100
     this.r = 50;
-    this.speed = 10;
-    this.health = 100;
+    this.health = 3;
     this.color = "rgb(153,153,255)";
     this.wingColor = "rgb(102,102,255)";
     this.wingWidth = 120;
@@ -22,10 +21,8 @@ export default class Player extends Object {
   }
 
   damage() {
-    this.health -= 20;
+    this.health -= 1;
   }
 
-  reset() {
-  
-  }
+  reset() {}
 }

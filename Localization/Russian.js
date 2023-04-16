@@ -1,11 +1,12 @@
 export default {
   dev: "Разработал Дробный Павел",
-  version: "v0.8.1 (БЕТА)",
+  version: "v0.9.5 (БЕТА)",
   navigation: "W,S или Стрелочки - Навигация",
   confirm: "Enter - Подтвердить",
   // Главное меню
   play: "Играть",
   bestScore: "Лучший результат",
+  abilities: "Cпособности",
   achievements: "Достижения (скоро)",
   language: "Язык",
   controls: "Управление",

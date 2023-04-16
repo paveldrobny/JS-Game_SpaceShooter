@@ -8,7 +8,6 @@ export default class EnemyEasy extends Object {
     this.w = 100;
     this.h = 100;
     this.r = 50;
-    this.speed = 10;
     this.color = "rgb(204,255,153)";
     this.wingColor = "rgb(178,255,102)";
     this.wingWidth = 120;

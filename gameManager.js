@@ -1,9 +1,6 @@
 export default class GameManager {
   constructor() {
-    // this.width = 1024;
-    // this.height = 768;
-    // this.aspectRatio = 4 / 3;
-
+    // Setting a different resolution may cause problems with the position of objects
     this.width = 1920;
     this.height = 1080;
     this.aspectRatio = 16 / 9;

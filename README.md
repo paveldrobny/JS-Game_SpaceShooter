@@ -1,5 +1,18 @@
 # JS-Game_SpaceShooter
 
+## v0.9.5(Beta)
+
+- Added
+  - New health UI
+- TODO
+  - Achivements
+  - Abilities
+  - Gamepad / Mobile input support
+  - Corrent work in other resolutions
+  - Enemy: Green - 1 damage, Orange - 2 damage - Red - 3 damage
+- Fixed
+  - Collisions
+
 ## v0.8.1(Beta)
 
 - Added
@@ -8,7 +21,7 @@
 - TODO
   - Achivements
   - Gamepad / Mobile input support
-  - Enemy: Green - 1 damage, Orange - 2 damage - Red - 3 damage 
+  - Enemy: Green - 1 damage, Orange - 2 damage - Red - 3 damage
   - Fixed collisions
 - Fixed
   - The structure of the code

@@ -8,6 +8,7 @@ const index = UI.langIndex;
 export const menuText = [
   lang[index].play,
   lang[index].bestScore,
+  // lang[index].abilities,
   lang[index].achievements,
   lang[index].language,
   lang[index].controls,

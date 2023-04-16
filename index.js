@@ -21,7 +21,7 @@ const canvas = document.getElementById("canvas");
 const context = canvas.getContext("2d");
 const gameManager = new GameManager();
 const player = new Player(
-  75 * gameManager.getScale(),
+  55 * gameManager.getScale(),
   (gameManager.height / 2) * gameManager.getScale()
 );
 
@@ -31,12 +31,6 @@ const languageMenu = new LanguageMenu();
 const controlsMenuPanel = new ControlsMenu();
 const hud = new HUD();
 const gameOverPanel = new GameOverMenu();
-
-let playerData = {
-  x: 0,
-  y: 0,
-  w: 0,
-};
 
 let keyState = [];
 let delayShoot = 0;
@@ -102,10 +96,10 @@ window.addEventListener("keydown", (e) => {
         case 1:
           highScoreMenu.select();
           break;
-        case 2:
+        case 3:
           languageMenu.select();
           break;
-        case 3:
+        case 4:
           controlsMenuPanel.select();
           break;
         case 99:
@@ -126,8 +120,8 @@ function shoot() {
     Bullets.push(
       new Bullet({
         velX: 15,
-        x: playerData.x + playerData.w + 50,
-        y: playerData.y,
+        x: player.x + player.w / 2,
+        y: player.y + player.h / 2,
       })
     );
     delayShoot = 100;
@@ -174,7 +168,6 @@ function collisionUpdate() {
 //#region UPDATE
 const update = () => {
   context.clearRect(0, 0, gameManager.width, gameManager.height);
-
   inputGame();
   gameManager.area(player);
 
@@ -236,9 +229,6 @@ const update = () => {
     });
 
     player.draw(context);
-    playerData.x = player.x;
-    playerData.y = player.y;
-    playerData.w = player.w;
 
     collisionUpdate();
     hud.draw(context, player);
@@ -260,7 +250,7 @@ const update = () => {
     gameOverPanel.draw();
     Bullets = [];
     Enemies = [];
-    player.health = 100;
+    player.health = 3;
   } else if (!Game.isPlay) {
     switch (UI.panelUIIndex) {
       case 0:
@@ -310,4 +300,5 @@ const update = () => {
 };
 
 update();
+
 //#endregion

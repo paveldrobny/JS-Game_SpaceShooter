@@ -1,11 +1,12 @@
 export default {
   dev: "Developed by Pavel Drobny",
-  version: "v0.8.1 (BETA)",
+  version: "v0.9.5 (BETA)",
   navigation: "W,S or Arrows - Navigation",
   confirm: "Enter - Confirm",
   // Main menu
   play: "Play",
   bestScore: "Best score",
+  abilities: "Abilities",
   achievements: "Achievements (soon)",
   language: "Language",
   controls: "Controls",
