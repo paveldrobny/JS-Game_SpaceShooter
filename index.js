@@ -96,10 +96,10 @@ window.addEventListener("keydown", (e) => {
         case 1:
           highScoreMenu.select();
           break;
-        case 3:
+        case 2:
           languageMenu.select();
           break;
-        case 4:
+        case 3:
           controlsMenuPanel.select();
           break;
         case 99:
