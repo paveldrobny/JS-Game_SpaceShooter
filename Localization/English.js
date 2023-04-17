@@ -1,8 +1,8 @@
 export default {
   dev: "Developed by Pavel Drobny",
   version: "v0.9.5 (BETA)",
-  navigation: "W,S or Arrows - Navigation",
-  confirm: "Enter - Confirm",
+  navigation: "W,S, Arrows or Axis (Gamepad) - Navigation",
+  confirm: "Enter or A (Gamepad) - Confirm",
   // Main menu
   play: "Play",
   bestScore: "Best score",
@@ -20,9 +20,9 @@ export default {
   keyboardTitle: "- Keyboard",
   keyboardMove: "W,S - Move",
   keyboardShoot: "Spacebar - Shoot",
-  gamepadTitle: "Gamepad (soon) -",
-  gamepadMove: "... - Move",
-  gamepadShoot: "... - Shoot",
+  gamepadTitle: "Gamepad -",
+  gamepadMove: "Axis - Move",
+  gamepadShoot: "X - Shoot",
   // Game over
   gameOverTitle: "GAME OVER",
   gameOverScore: "You score: ",

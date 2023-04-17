@@ -1,6 +1,5 @@
 import GameManager from "./gameManager.js";
 import Player from "./Entities/Player.js";
-import KEYS from "./keys.js";
 import EnemyEasy from "./Entities/EnemyEasy.js";
 import EnemyAverage from "./Entities/EnemyAverage.js";
 import EnemyHigh from "./Entities/EnemyHigh.js";
@@ -15,6 +14,7 @@ import Particle from "./Entities/Particle.js";
 import DebugMessage from "./UI/DebugMessage.js";
 import localization from "./Localization/Parse.js";
 import LanguageMenu from "./UI/Panels/LanguageMenu.js";
+import Buttons from "./buttons.js";
 
 //#region Init
 const canvas = document.getElementById("canvas");
@@ -32,6 +32,7 @@ const controlsMenuPanel = new ControlsMenu();
 const hud = new HUD();
 const gameOverPanel = new GameOverMenu();
 
+let isGamepadConnected = false;
 let keyState = [];
 let delayShoot = 0;
 let Bullets = [];
@@ -49,72 +50,106 @@ window.addEventListener("resize", function () {
   gameManager.resize(canvas, context, gameManager.width, gameManager.height);
 });
 
+function menuSelectorUp(condition) {
+  if (condition) {
+    switch (UI.panelUIIndex) {
+      case 0:
+        if (UI.mainMenuIndex > 0) UI.mainMenuIndex--;
+        break;
+      case 1:
+        if (UI.controlsMenuIndex > 0) UI.controlsMenuIndex--;
+        break;
+      case 2:
+        if (UI.languageMenuIndex > 0) UI.languageMenuIndex--;
+        break;
+      case 99:
+        if (UI.gameOverMenuIndex > 0) UI.gameOverMenuIndex--;
+        break;
+    }
+  }
+}
+
+function menuSelectorDown(condition) {
+  if (condition) {
+    switch (UI.panelUIIndex) {
+      case 0:
+        if (UI.mainMenuIndex < localization.menuText.length - 1)
+          UI.mainMenuIndex++;
+        break;
+      case 2:
+        if (
+          UI.languageMenuIndex <
+          localization.availableLanguagesText.length - 1
+        )
+          UI.languageMenuIndex++;
+        break;
+      case 99:
+        if (UI.gameOverMenuIndex < localization.gameOverText.length - 1)
+          UI.gameOverMenuIndex++;
+        break;
+    }
+  }
+}
+
+function menuAccept(condition) {
+  if (condition) {
+    switch (UI.panelUIIndex) {
+      case 0:
+        mainMenuPanel.select();
+        break;
+      case 1:
+        highScoreMenu.select();
+        break;
+      case 2:
+        languageMenu.select();
+        break;
+      case 3:
+        controlsMenuPanel.select();
+        break;
+      case 99:
+        gameOverPanel.select();
+        break;
+    }
+  }
+}
+
 window.addEventListener("keydown", (e) => {
   keyState[e.keyCode] = true;
 
+  const buttons = new Buttons();
+
   if (!Game.isPlay || Game.isGameOver) {
-    if (e.keyCode == KEYS.W || e.keyCode == KEYS.ArrowUp) {
-      switch (UI.panelUIIndex) {
-        case 0:
-          if (UI.mainMenuIndex > 0) UI.mainMenuIndex--;
-          break;
-        case 1:
-          if (UI.controlsMenuIndex > 0) UI.controlsMenuIndex--;
-          break;
-        case 2:
-          if (UI.languageMenuIndex > 0) UI.languageMenuIndex--;
-          break;
-        case 99:
-          if (UI.gameOverMenuIndex > 0) UI.gameOverMenuIndex--;
-          break;
-      }
-    }
-    if (e.keyCode == KEYS.S || e.keyCode == KEYS.ArrowDown) {
-      switch (UI.panelUIIndex) {
-        case 0:
-          if (UI.mainMenuIndex < localization.menuText.length - 1)
-            UI.mainMenuIndex++;
-          break;
-        case 2:
-          if (
-            UI.languageMenuIndex <
-            localization.availableLanguagesText.length - 1
-          )
-            UI.languageMenuIndex++;
-          break;
-        case 99:
-          if (UI.gameOverMenuIndex < localization.gameOverText.length - 1)
-            UI.gameOverMenuIndex++;
-          break;
-      }
-    }
-    if (e.keyCode == KEYS.Enter) {
-      switch (UI.panelUIIndex) {
-        case 0:
-          mainMenuPanel.select();
-          break;
-        case 1:
-          highScoreMenu.select();
-          break;
-        case 2:
-          languageMenu.select();
-          break;
-        case 3:
-          controlsMenuPanel.select();
-          break;
-        case 99:
-          gameOverPanel.select();
-          break;
-      }
-    }
+    const btn = buttons.keyboard();
+    menuSelectorUp(e.keyCode == btn.W || e.keyCode == btn.ArrowUp);
+    menuSelectorDown(e.keyCode == btn.S || e.keyCode == btn.ArrowDown);
+    menuAccept(e.keyCode == btn.Enter);
   }
 });
+
 window.addEventListener("keyup", (e) => {
   keyState[e.keyCode] = false;
 });
+
+window.addEventListener("gamepadconnected", function (e) {
+  isGamepadConnected = true;
+});
+
+window.addEventListener("gamepaddisconnected", function (e) {
+  isGamepadConnected = false;
+});
+
+setInterval(function () {
+  if (isGamepadConnected) {
+    const buttons = new Buttons();
+    if (!Game.isPlay || Game.isGameOver) {
+      menuSelectorUp(buttons.gamepad().Up);
+      menuSelectorDown(buttons.gamepad().Down);
+      menuAccept(buttons.gamepad().A.pressed);
+    }
+  }
+}, 100);
 //#endregion
 
-//#region  Input
 function shoot() {
   if (delayShoot === 0) {
     Bullets.push(
@@ -130,19 +165,36 @@ function shoot() {
   }
 }
 
-function inputGame() {
-  if (keyState[KEYS.W]) {
+function playerMovementPC() {
+  const button = new Buttons();
+  const keyboard = button.keyboard();
+
+  if (keyState[keyboard.W] || keyState[keyboard.ArrowUp]) {
     player.y -= player.speed;
   }
-  if (keyState[KEYS.S]) {
+  if (keyState[keyboard.S] || keyState[keyboard.ArrowDown]) {
     player.y += player.speed;
   }
-  if (keyState[KEYS.Spacebar]) {
+  if (keyState[keyboard.Spacebar]) {
     shoot();
   }
 }
 
-//#endregion
+function playerMovementGamepad() {
+  const button = new Buttons();
+  const gamepad = button.gamepad();
+
+  if (gamepad.Up) {
+    player.y -= player.speed;
+  }
+  if (gamepad.Down) {
+    player.y += player.speed;
+  }
+  if (gamepad.X.pressed == true) {
+    shoot();
+  }
+}
+
 function collisionCheck(a, b) {
   return (
     a.x < b.x + b.w && a.x + a.w > b.x && a.y < b.y + b.h && a.y + a.h > b.y
@@ -170,8 +222,13 @@ function collisionUpdate() {
 //#region UPDATE
 const update = () => {
   context.clearRect(0, 0, gameManager.width, gameManager.height);
-  inputGame();
+
   gameManager.area(player);
+
+  playerMovementPC();
+  if (isGamepadConnected) {
+    playerMovementGamepad();
+  }
 
   if (Math.random() < 0.1) Particles.push(new Particle());
 
@@ -295,6 +352,14 @@ const update = () => {
       y: gameManager.height - 15,
       text: localization.confirm,
       align: "left",
+    }).draw(context);
+
+    new DebugMessage({
+      x: gameManager.width / 2,
+      y: gameManager.height - 30,
+      text: isGamepadConnected ? "Gamepad connected" : "Gamepad not found",
+      align: "center",
+      color: isGamepadConnected ? "green" : "red"
     }).draw(context);
   }
 
