@@ -39,6 +39,28 @@ let Bullets = [];
 let Enemies = [];
 let Particles = [];
 
+const messageData = [
+  { x: gameManager.width - 15, y: 30, text: localization.dev, align: "right" },
+  {
+    x: gameManager.width - 15,
+    y: gameManager.height - 15,
+    text: localization.version,
+    align: "right",
+  },
+  {
+    x: 15,
+    y: gameManager.height - 50,
+    text: localization.navigation,
+    align: "left",
+  },
+  {
+    x: 15,
+    y: gameManager.height - 15,
+    text: localization.confirm,
+    align: "left",
+  },
+];
+
 //#endregion
 
 //#region Events
@@ -339,40 +361,24 @@ const update = () => {
         break;
     }
 
-    new DebugMessage({
-      x: gameManager.width - 15,
-      y: 30,
-      text: localization.dev,
-      align: "right",
-    }).draw(context);
-
-    new DebugMessage({
-      x: gameManager.width - 15,
-      y: gameManager.height - 15,
-      text: localization.version,
-      align: "right",
-    }).draw(context);
-
-    new DebugMessage({
-      x: 15,
-      y: gameManager.height - 50,
-      text: localization.navigation,
-      align: "left",
-    }).draw(context);
-
-    new DebugMessage({
-      x: 15,
-      y: gameManager.height - 15,
-      text: localization.confirm,
-      align: "left",
-    }).draw(context);
+    messageData.forEach((message) => {
+      new DebugMessage({
+        x: message.x,
+        y: message.y,
+        text: message.text,
+        align: message.align,
+      }).draw(context);
+    });
 
     const buttonsGamepad = new Buttons();
-
     new DebugMessage({
       x: gameManager.width / 2,
       y: gameManager.height - 30,
-      text: isGamepadConnected ?  `Gamepad connected: ${buttonsGamepad.myGamepad.id.replace(/ /g,'')}` : "Gamepad not found",
+      text: isGamepadConnected
+        ? `Gamepad connected: ${buttonsGamepad.myGamepad.id
+            .replace(/ /g, "")
+            .slice(0, 20)}...`
+        : "Gamepad not found",
       align: "center",
       color: isGamepadConnected ? "green" : "red",
     }).draw(context);
