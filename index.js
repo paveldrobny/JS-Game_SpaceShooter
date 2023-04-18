@@ -132,22 +132,33 @@ window.addEventListener("keyup", (e) => {
 
 window.addEventListener("gamepadconnected", function (e) {
   isGamepadConnected = true;
+  console.log("✅ 🎮 A gamepad was connected:", e.gamepad);
+  loopGamepad();
 });
 
 window.addEventListener("gamepaddisconnected", function (e) {
   isGamepadConnected = false;
 });
 
-setInterval(function () {
-  if (isGamepadConnected) {
-    const buttons = new Buttons();
-    if (!Game.isPlay || Game.isGameOver) {
-      menuSelectorUp(buttons.gamepad().Up);
-      menuSelectorDown(buttons.gamepad().Down);
-      menuAccept(buttons.gamepad().A.pressed);
+function loopGamepad() {
+  setInterval(function () {
+    if (isGamepadConnected) {
+      console.log(UI.gamepadValidIndex);
+      const buttons = new Buttons();
+      if (buttons.gamepad().A == undefined) {
+        UI.gamepadValidIndex += 1;
+      } else {
+        if (!Game.isPlay || Game.isGameOver) {
+          const buttons = new Buttons();
+          menuSelectorUp(buttons.gamepad().Up);
+          menuSelectorDown(buttons.gamepad().Down);
+          menuAccept(buttons.gamepad().A.pressed);
+        }
+      }
     }
-  }
-}, 100);
+  }, 100);
+}
+
 //#endregion
 
 function shoot() {
@@ -190,8 +201,10 @@ function playerMovementGamepad() {
   if (gamepad.Down) {
     player.y += player.speed;
   }
-  if (gamepad.X.pressed == true) {
-    shoot();
+  if (button.gamepad().X != undefined) {
+    if (gamepad.X.pressed) {
+      shoot();
+    }
   }
 }
 
@@ -359,7 +372,7 @@ const update = () => {
       y: gameManager.height - 30,
       text: isGamepadConnected ? "Gamepad connected" : "Gamepad not found",
       align: "center",
-      color: isGamepadConnected ? "green" : "red"
+      color: isGamepadConnected ? "green" : "red",
     }).draw(context);
   }
 

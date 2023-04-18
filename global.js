@@ -51,6 +51,7 @@ export const UI = {
   _languageMenuIndex: 2,
   _controlsMenuIndex: 0,
   _gameOverMenuIndex: 0,
+  _gamepadValidIndex: 0,
 
   get langIndex() {
     return this._langIndex;
@@ -106,5 +107,13 @@ export const UI = {
 
   set gameOverMenuIndex(value) {
     this._gameOverMenuIndex = value;
+  },
+
+  get gamepadValidIndex() {
+    return this._gamepadValidIndex;
+  },
+
+  set gamepadValidIndex(value) {
+    this._gamepadValidIndex = value;
   },
 };

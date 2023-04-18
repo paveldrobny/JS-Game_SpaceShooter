@@ -1,8 +1,10 @@
+import { UI } from "./global.js";
+
 export default class Buttons {
   constructor() {
-    this.myGamepad = navigator.getGamepads()[0];
+    this.myGamepad = navigator.getGamepads()[UI.gamepadValidIndex];
   }
-  
+
   keyboard() {
     return {
       W: 87,
