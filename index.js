@@ -373,7 +373,7 @@ const update = () => {
     const buttonsGamepad = new Buttons();
     new DebugMessage({
       x: gameManager.width / 2,
-      y: gameManager.height - 30,
+      y: gameManager.height - 35,
       text: isGamepadConnected
         ? `Gamepad connected: ${buttonsGamepad.myGamepad.id
             .replace(/ /g, "")
