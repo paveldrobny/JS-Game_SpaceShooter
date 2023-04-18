@@ -38,7 +38,7 @@ export const backToMenu = lang[index].backToMenu;
 export const myBestScore = lang[index].myBestScore;
 
 export const dev = lang[index].dev;
-export const version = "v0.9.5 (BETA)";
+export const version = "v0.9.7 (BETA)";
 export const navigation = lang[index].navigation;
 export const confirm = lang[index].confirm;
 
