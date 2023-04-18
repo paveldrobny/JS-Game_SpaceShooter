@@ -39,10 +39,10 @@ export default class LanguageMenu {
   select() {
     switch (UI.languageMenuIndex) {
       case 0:
-        applyLang(0);
+        this.applyLang(0);
         break;
       case 1:
-        applyLang(1);
+        this.applyLang(1);
         break;
       case 2:
         UI.panelUIIndex = 0;
