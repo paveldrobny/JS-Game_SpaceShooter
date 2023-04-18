@@ -20,9 +20,9 @@ export default {
   keyboardTitle: "- Клавиатура",
   keyboardMove: "W,S - Двигатся",
   keyboardShoot: "Spacebar - Стрелять",
-  gamepadTitle: "Геймпад (скоро) -",
-  gamepadMove: "... - Двигатся",
-  gamepadShoot: "... - Стрелять",
+  gamepadTitle: "Геймпад -",
+  gamepadMove: "Ось - Двигатся",
+  gamepadShoot: "X - Стрелять",
   // Конец игры
   gameOverTitle: "КОНЕЦ ИГРЫ",
   gameOverScore: "Ваш счет: ",
