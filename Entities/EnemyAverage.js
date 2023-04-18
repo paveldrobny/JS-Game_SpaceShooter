@@ -8,6 +8,7 @@ export default class EnemyAverage extends Object {
     this.w = 100;
     this.h = 100;
     this.r = 50;
+    this.health = 2;
     this.color = "rgb(255,204,153)";
     this.wingColor = "rgb(255,178,102)";
     this.wingWidth = 120;
@@ -19,6 +20,10 @@ export default class EnemyAverage extends Object {
 
   draw(context) {
     super.draw(context);
+  }
+
+  damage() {
+    super.damage();
   }
 
   destroy() {

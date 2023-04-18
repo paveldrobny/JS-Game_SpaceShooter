@@ -1,3 +1,9 @@
+export const DebugMode = {
+  isEnabled: false,
+  showPlayerCollision: false,
+  showEnemyCollision: false,
+};
+
 export const Game = {
   _isPlay: false,
   _isGameOver: false,

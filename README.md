@@ -1,28 +1,30 @@
 # JS-Game_SpaceShooter
 
-## v0.9.7(Beta)
+## Release notes:
 
+### v0.9.9(Beta)
 - Added
-  - New health UI
-  - Gamepad support
+  - Enemy
+    - New spawn system
+    - Green - 1 health, Orange - 2 health, Red - 3 health
 - TODO
   - Achivements
   - Abilities
   - Corrent work in other resolutions
-  - Enemy: Green - 1 damage, Orange - 2 damage - Red - 3 damage
+- Fixed
+  - Spawn position
+
+### v0.9.7(Beta)
+- Added
+  - New health UI
+  - Gamepad support
 - Fixed
   - Collisions
 
-## v0.8.1(Beta)
-
+### v0.8.1(Beta)
 - Added
   - Best score
   - Localization (English, Russian)
-- TODO
-  - Achivements
-  - Gamepad / Mobile input support
-  - Enemy: Green - 1 damage, Orange - 2 damage - Red - 3 damage
-  - Fixed collisions
 - Fixed
   - The structure of the code
 

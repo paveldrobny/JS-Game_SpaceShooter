@@ -5,7 +5,7 @@ import EnemyAverage from "./Entities/EnemyAverage.js";
 import EnemyHigh from "./Entities/EnemyHigh.js";
 import MainMenu from "./UI/Panels/MainMenu.js";
 import ControlsMenu from "./UI/Panels/ControlsMenu.js";
-import { Game, UI } from "./global.js";
+import { DebugMode, Game, UI } from "./global.js";
 import HUD from "./UI/Panels/HUD.js";
 import GameOverMenu from "./UI/Panels/GameOver.js";
 import HighScoreMenu from "./UI/Panels/HighScoreMenu.js";
@@ -38,6 +38,16 @@ let delayShoot = 0;
 let Bullets = [];
 let Enemies = [];
 let Particles = [];
+
+const ENEMY_EASY_SPAWN_DISTANCE = 20;
+const ENEMY_AVARAGE_SPAWN_DISTANCE = 80;
+const ENEMY_HIGH_SPAWN_DISTANCE = 140;
+
+let positionLogic = {
+  easyX: ENEMY_EASY_SPAWN_DISTANCE,
+  averageX: ENEMY_AVARAGE_SPAWN_DISTANCE,
+  highX: ENEMY_HIGH_SPAWN_DISTANCE,
+};
 
 const messageData = [
   { x: gameManager.width - 15, y: 30, text: localization.dev, align: "right" },
@@ -241,7 +251,8 @@ function collisionUpdate() {
     Enemies.forEach(function (enemy) {
       if (collisionCheck(bullet, enemy)) {
         bullet.destroy();
-        enemy.destroy();
+        enemy.damage(enemy.health);
+        if (enemy.health <= 0) enemy.destroy();
       }
     });
   });
@@ -259,6 +270,13 @@ const update = () => {
   context.clearRect(0, 0, gameManager.width, gameManager.height);
 
   gameManager.area(player);
+
+  // DebugMode
+  if (DebugMode.isEnabled) {
+    new EnemyEasy(100, 100).draw(context);
+    new EnemyAverage(300, 100).draw(context);
+    new EnemyHigh(500, 100).draw(context);
+  }
 
   playerMovementPC();
   if (isGamepadConnected) {
@@ -296,18 +314,25 @@ const update = () => {
       delayShoot -= 10;
     }
 
-    let positionY = Math.floor(Math.random() * gameManager.height - 200) + 200;
+    let positionY = Math.floor(Math.random() * (gameManager.height - 150)) + 50;
 
-    if (Math.random() < 0.02) {
+    positionLogic.easyX -= 1;
+    positionLogic.averageX -= 1;
+    positionLogic.highX -= 1;
+
+    if (positionLogic.easyX <= 0) {
       Enemies.push(new EnemyEasy(gameManager.width, positionY));
+      positionLogic.easyX = ENEMY_EASY_SPAWN_DISTANCE;
     }
 
-    if (Math.random() < 0.005) {
+    if (positionLogic.averageX <= 0) {
       Enemies.push(new EnemyAverage(gameManager.width, positionY));
+      positionLogic.averageX = ENEMY_AVARAGE_SPAWN_DISTANCE;
     }
 
-    if (Math.random() < 0.001) {
+    if (positionLogic.highX <= 0) {
       Enemies.push(new EnemyHigh(gameManager.width, positionY));
+      positionLogic.highX = ENEMY_HIGH_SPAWN_DISTANCE;
     }
 
     Enemies.forEach(function (enemy) {

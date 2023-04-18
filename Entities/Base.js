@@ -9,6 +9,7 @@ export default class ObjectBase {
     this.h = 0;
     this.r = 100;
     this.speed = 15;
+    this.health = 3;
     this.color = color;
     this.wingColor = "rgb(102,102,255)";
     this.wingWidth = 120;
@@ -16,6 +17,18 @@ export default class ObjectBase {
     this.active = true;
     this.aligh = "left";
     this.tag = "";
+  }
+
+  drawHealth(context, x) {
+    const BG_SIZE = 21;
+    const SIZE = 15;
+
+    let y =
+      this.y / gameManager.getScale() + (this.h / 2) * gameManager.getScale();
+    context.fillStyle = "black";
+    context.fillRect(x - 3, y - SIZE / 2 - 3, BG_SIZE, BG_SIZE);
+    context.fillStyle = this.wingColor;
+    context.fillRect(x, y - SIZE / 2, SIZE, SIZE);
   }
 
   draw(context) {
@@ -66,6 +79,29 @@ export default class ObjectBase {
       this.wingWidth * gameManager.getScale(),
       this.wingHeight * gameManager.getScale()
     );
+
+    context.beginPath();
+    switch (this.tag) {
+      case "EnemyEasy":
+        this.drawHealth(context, this.x / gameManager.getScale() + 20 * 2);
+        break;
+      case "EnemyAverage":
+        for (let i = 0; i < this.health; i++) {
+          this.drawHealth(
+            context,
+            this.x / gameManager.getScale() + 30 + i * 28
+          );
+        }
+        break;
+      case "EnemyHigh":
+        for (let i = 0; i < this.health; i++) {
+          this.drawHealth(
+            context,
+            this.x / gameManager.getScale() + 15 + i * 28
+          );
+        }
+        break;
+    }
   }
 
   move() {
@@ -74,5 +110,9 @@ export default class ObjectBase {
 
   destroy() {
     this.active = false;
+  }
+
+  damage() {
+    this.health -= 1;
   }
 }

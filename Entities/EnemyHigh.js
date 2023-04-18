@@ -11,6 +11,7 @@ export default class EnemyHigh extends Object {
     this.w = 100;
     this.h = 100;
     this.r = 50;
+    this.health = 3;
     this.color = "rgb(255,153,153)";
     this.wingColor = "rgb(255,102,102)";
     this.wingWidth = 120;
@@ -23,7 +24,11 @@ export default class EnemyHigh extends Object {
     super.draw(context);
   }
 
-  destroy(){
-    super.destroy()
+  damage() {
+    super.damage();
+  }
+
+  destroy() {
+    super.destroy();
   }
 }
