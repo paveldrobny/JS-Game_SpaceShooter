@@ -1,6 +1,5 @@
 export default {
   dev: "Developed by Pavel Drobny",
-  version: "v0.9.5 (BETA)",
   navigation: "W,S, Arrows or Axis (Gamepad) - Navigation",
   confirm: "Enter or A (Gamepad) - Confirm",
   // Main menu
