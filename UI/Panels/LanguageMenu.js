@@ -30,17 +30,19 @@ export default class LanguageMenu {
     }).draw(context);
   }
 
+  applyLang(id){
+    UI.langIndex = id;
+    localStorage.setItem("lang", UI.langIndex);
+    window.location.reload();
+  }
+
   select() {
     switch (UI.languageMenuIndex) {
       case 0:
-        UI.langIndex = 0;
-        localStorage.setItem("lang", UI.langIndex);
-        window.location.reload();
+        applyLang(0);
         break;
       case 1:
-        UI.langIndex = 1;
-        localStorage.setItem("lang", UI.langIndex);
-        window.location.reload();
+        applyLang(1);
         break;
       case 2:
         UI.panelUIIndex = 0;
