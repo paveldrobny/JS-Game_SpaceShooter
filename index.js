@@ -367,10 +367,12 @@ const update = () => {
       align: "left",
     }).draw(context);
 
+    const buttonsGamepad = new Buttons();
+
     new DebugMessage({
       x: gameManager.width / 2,
       y: gameManager.height - 30,
-      text: isGamepadConnected ? "Gamepad connected" : "Gamepad not found",
+      text: isGamepadConnected ?  `Gamepad connected: ${buttonsGamepad.myGamepad.id.replace(/ /g,'')}` : "Gamepad not found",
       align: "center",
       color: isGamepadConnected ? "green" : "red",
     }).draw(context);
