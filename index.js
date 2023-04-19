@@ -442,6 +442,13 @@ const update = () => {
       });
     }
 
+    new DebugMessage({
+      x: gameManager.width / 2,
+      y: gameManager.height - 180,
+      text: localization.resolution,
+      align: "center",
+    }).draw(context);
+
     const buttonsGamepad = new Buttons();
     new DebugMessage({
       x: gameManager.width / 2,

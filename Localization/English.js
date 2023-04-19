@@ -2,6 +2,7 @@ export default {
   dev: "Developed by Pavel Drobny",
   navigation: "W,S, Arrows or Axis (Gamepad) - Navigation",
   confirm: "Enter or A (Gamepad) - Confirm",
+  resolution: "Recommended resolution: 1920x1080",
 
   // Main menu
   play: "Play",

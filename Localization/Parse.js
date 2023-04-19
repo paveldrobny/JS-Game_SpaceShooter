@@ -53,6 +53,7 @@ export const dev = lang[index].dev;
 export const version = "v1.1";
 export const navigation = lang[index].navigation;
 export const confirm = lang[index].confirm;
+export const resolution = lang[index].resolution;
 
 export const gameOver = lang[index].gameOverTitle;
 export const gameOverScore = lang[index].gameOverScore;
@@ -72,6 +73,7 @@ const localization = {
   version,
   navigation,
   confirm,
+  resolution,
   gameOver,
   gameOverScore,
   gameOverText,
