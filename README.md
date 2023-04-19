@@ -1,4 +1,4 @@
-# JS-Game_SpaceShooter
+# JS-Game: Space shooter
 
 ## v1.1
 - Added
