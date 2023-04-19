@@ -15,6 +15,9 @@ import DebugMessage from "./UI/DebugMessage.js";
 import localization from "./Localization/Parse.js";
 import LanguageMenu from "./UI/Panels/LanguageMenu.js";
 import Buttons from "./buttons.js";
+import { Achievements, achievementsCondition } from "./achievements.js";
+import AchievementsMenu from "./UI/Panels/AchievementsMenu.js";
+import AbilitiesMenu from "./UI/Panels/AbilitiesMenu.js";
 
 //#region Init
 const canvas = document.getElementById("canvas");
@@ -27,10 +30,13 @@ const player = new Player(
 
 const mainMenuPanel = new MainMenu();
 const highScoreMenu = new HighScoreMenu();
+const abilitiesMenu = new AbilitiesMenu();
+const achievementsMenu = new AchievementsMenu();
 const languageMenu = new LanguageMenu();
 const controlsMenuPanel = new ControlsMenu();
 const hud = new HUD();
 const gameOverPanel = new GameOverMenu();
+const achievements = new Achievements();
 
 let isGamepadConnected = false;
 let keyState = [];
@@ -88,10 +94,10 @@ function menuSelectorUp(condition) {
       case 0:
         if (UI.mainMenuIndex > 0) UI.mainMenuIndex--;
         break;
-      case 1:
-        if (UI.controlsMenuIndex > 0) UI.controlsMenuIndex--;
-        break;
       case 2:
+        if (UI.abilitiesIndex > 0) UI.abilitiesIndex--;
+        break;
+      case 4:
         if (UI.languageMenuIndex > 0) UI.languageMenuIndex--;
         break;
       case 99:
@@ -109,6 +115,10 @@ function menuSelectorDown(condition) {
           UI.mainMenuIndex++;
         break;
       case 2:
+        if (UI.abilitiesIndex < localization.abilitiesText.length - 1)
+          UI.abilitiesIndex++;
+        break;
+      case 4:
         if (
           UI.languageMenuIndex <
           localization.availableLanguagesText.length - 1
@@ -133,9 +143,15 @@ function menuAccept(condition) {
         highScoreMenu.select();
         break;
       case 2:
-        languageMenu.select();
+        abilitiesMenu.select();
         break;
       case 3:
+        achievementsMenu.select();
+        break;
+      case 4:
+        languageMenu.select();
+        break;
+      case 5:
         controlsMenuPanel.select();
         break;
       case 99:
@@ -164,7 +180,7 @@ window.addEventListener("keyup", (e) => {
 
 window.addEventListener("gamepadconnected", function (e) {
   isGamepadConnected = true;
-  console.log("✅ 🎮 A gamepad was connected:", e.gamepad);
+  console.log("✅ Gamepad connected:", e.gamepad);
   loopGamepad();
 });
 
@@ -251,8 +267,13 @@ function collisionUpdate() {
     Enemies.forEach(function (enemy) {
       if (collisionCheck(bullet, enemy)) {
         bullet.destroy();
-        enemy.damage(enemy.health);
-        if (enemy.health <= 0) enemy.destroy();
+        enemy.damage();
+        if (enemy.health <= 0) {
+          achievementsCondition.Count.kill++;
+          enemy.destroy();
+          Game.coins += 10;
+          localStorage.setItem("coins", Game.coins);
+        }
       }
     });
   });
@@ -270,12 +291,13 @@ const update = () => {
   context.clearRect(0, 0, gameManager.width, gameManager.height);
 
   gameManager.area(player);
+  achievements.UI();
 
   // DebugMode
   if (DebugMode.isEnabled) {
-    new EnemyEasy(100, 100).draw(context);
-    new EnemyAverage(300, 100).draw(context);
-    new EnemyHigh(500, 100).draw(context);
+    new Enemy(100, 100, 0).draw(context);
+    new Enemy(300, 100, 1).draw(context);
+    new Enemy(500, 100, 2).draw(context);
   }
 
   playerMovementPC();
@@ -314,15 +336,21 @@ const update = () => {
       delayShoot -= 10;
     }
 
+    // SPAWN SYSTEM
     let positionY = Math.floor(Math.random() * (gameManager.height - 150)) + 50;
 
     positionLogic.easyX -= 1;
     positionLogic.averageX -= 1;
     positionLogic.highX -= 1;
 
-    if (positionLogic.easyX <= 0) {
-      Enemies.push(new EnemyEasy(gameManager.width, positionY));
-      positionLogic.easyX = ENEMY_EASY_SPAWN_DISTANCE;
+    if (
+      positionLogic.easyX !== positionLogic.averageX &&
+      positionLogic.easyX !== positionLogic.highX
+    ) {
+      if (positionLogic.easyX <= 0) {
+        Enemies.push(new EnemyEasy(gameManager.width, positionY));
+        positionLogic.easyX = ENEMY_EASY_SPAWN_DISTANCE;
+      }
     }
 
     if (positionLogic.averageX <= 0) {
@@ -334,9 +362,10 @@ const update = () => {
       Enemies.push(new EnemyHigh(gameManager.width, positionY));
       positionLogic.highX = ENEMY_HIGH_SPAWN_DISTANCE;
     }
+    ///////////////////////////////////
 
     Enemies.forEach(function (enemy) {
-      if (enemy.x < 0) {
+      if (enemy.x < -100) {
         enemy.destroy();
       }
       enemy.draw(context);
@@ -352,6 +381,9 @@ const update = () => {
     collisionUpdate();
     hud.draw(context, player);
     Game.score += 1;
+
+    achievements.checkReach();
+    achievements.checkKill();
 
     if (player.health <= 0) {
       Game.isGameOver = true;
@@ -369,7 +401,14 @@ const update = () => {
     gameOverPanel.draw();
     Bullets = [];
     Enemies = [];
-    player.health = 3;
+
+    if (localStorage.getItem("health") !== null) {
+      player.health = parseInt(localStorage.getItem("health"));
+    } else {
+      player.health = 3;
+    }
+
+    achievementsCondition.Count.reach = 0;
   } else if (!Game.isPlay) {
     switch (UI.panelUIIndex) {
       case 0:
@@ -379,21 +418,29 @@ const update = () => {
         highScoreMenu.draw();
         break;
       case 2:
-        languageMenu.draw();
+        abilitiesMenu.draw();
         break;
       case 3:
+        achievementsMenu.draw();
+        break;
+      case 4:
+        languageMenu.draw();
+        break;
+      case 5:
         controlsMenuPanel.draw();
         break;
     }
 
-    messageData.forEach((message) => {
-      new DebugMessage({
-        x: message.x,
-        y: message.y,
-        text: message.text,
-        align: message.align,
-      }).draw(context);
-    });
+    if (!DebugMode.isEnabled) {
+      messageData.forEach((message) => {
+        new DebugMessage({
+          x: message.x,
+          y: message.y,
+          text: message.text,
+          align: message.align,
+        }).draw(context);
+      });
+    }
 
     const buttonsGamepad = new Buttons();
     new DebugMessage({

@@ -1,3 +1,4 @@
+import { Game } from "../global.js";
 import Object from "./Base.js";
 
 export default class Player extends Object {
@@ -5,10 +6,10 @@ export default class Player extends Object {
     super();
     this.x = x;
     this.y = y;
-    this.w = 100
-    this.h = 100
+    this.w = 100;
+    this.h = 100;
     this.r = 50;
-    this.health = 3;
+    this.health = Game.playerHealth;
     this.color = "rgb(153,153,255)";
     this.wingColor = "rgb(102,102,255)";
     this.wingWidth = 120;
@@ -21,7 +22,7 @@ export default class Player extends Object {
   }
 
   damage() {
-    this.health -= 1;
+    super.damage();
   }
 
   reset() {}

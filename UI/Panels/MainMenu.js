@@ -8,7 +8,7 @@ export default class MainMenu {
         i,
         localization.menuText[i],
         UI.mainMenuIndex,
-        2.6
+        3
       );
       buttonMain.draw();
     }
@@ -23,11 +23,17 @@ export default class MainMenu {
       case 1:
         UI.panelUIIndex = 1;
         break;
-      case 3:
+      case 2:
         UI.panelUIIndex = 2;
         break;
-      case 4:
+      case 3:
         UI.panelUIIndex = 3;
+        break;
+      case 4:
+        UI.panelUIIndex = 4;
+        break;
+      case 5:
+        UI.panelUIIndex = 5;
         break;
     }
   }

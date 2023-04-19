@@ -27,7 +27,6 @@ export default class GameOverMenu {
         Game.score = 0;
         Game.isGameOver = false;
         Game.isPlay = true;
-        console.log("Ssad");
         break;
       case 1:
         UI.panelUIIndex = 0;

@@ -8,7 +8,7 @@ const index = UI.langIndex;
 export const menuText = [
   lang[index].play,
   lang[index].bestScore,
-  // lang[index].abilities,
+  lang[index].abilities,
   lang[index].achievements,
   lang[index].language,
   lang[index].controls,
@@ -19,6 +19,10 @@ export const availableLanguagesText = [
   lang[index].russian,
   lang[index].backToMenu,
 ];
+
+export const getCoins = lang[index].getCoins;
+
+export const abilitiesText = [lang[index].upHealth, lang[index].backToMenu];
 
 export const reloadMessage = lang[index].reloadMessage;
 
@@ -34,11 +38,19 @@ export const gamepadInputText = [
   lang[index].gamepadShoot,
 ];
 
+export const achievements = [
+  lang[index].achievementsUnlock,
+  lang[index].firstStep,
+  lang[index].firstStepDesc,
+  lang[index].trippleKill,
+  lang[index].trippleKillDesc,
+];
+
 export const backToMenu = lang[index].backToMenu;
 export const myBestScore = lang[index].myBestScore;
 
 export const dev = lang[index].dev;
-export const version = "v0.9.9(Beta)";
+export const version = "v1.1";
 export const navigation = lang[index].navigation;
 export const confirm = lang[index].confirm;
 
@@ -54,6 +66,8 @@ const localization = {
   gamepadInputText,
   backToMenu,
   myBestScore,
+  getCoins,
+  abilitiesText,
   dev,
   version,
   navigation,
@@ -61,6 +75,7 @@ const localization = {
   gameOver,
   gameOverScore,
   gameOverText,
+  achievements,
 };
 
 export default localization;
