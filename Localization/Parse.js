@@ -44,7 +44,7 @@ export const backToMenu = lang[index].backToMenu;
 export const myBestScore = lang[index].myBestScore;
 
 export const dev = lang[index].dev;
-export const version = "v1.2";
+export const version = "v1.4";
 export const navigation = lang[index].navigation;
 export const confirm = lang[index].confirm;
 
