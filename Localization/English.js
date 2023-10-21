@@ -1,8 +1,7 @@
 export default {
   dev: "Developed by Pavel Drobny",
-  navigation: "W,S, Arrows or Axis (Gamepad) - Navigation",
-  confirm: "Enter or A (Gamepad) - Confirm",
-  resolution: "Recommended resolution: 1920x1080",
+  navigation: "W,S, Arrows - Navigation",
+  confirm: "Enter - Confirm",
 
   // Main menu
   play: "Play",
@@ -17,7 +16,7 @@ export default {
 
   // Abilities
   upHealth: "Buy 1 health (1000 coins)",
-  getCoins: "Destroy enemies to get coins. (1 enemy - 10 coins)",
+  getCoins: "Destroy enemies to get coins. (1 enemy - 3 coins)",
 
   // Language
   english: "English",
@@ -25,12 +24,9 @@ export default {
   reloadMessage: "The game will restart after selecting the language",
 
   // Controls
-  keyboardTitle: "- Keyboard",
+  keyboardTitle: "Keyboard",
   keyboardMove: "W,S - Move",
   keyboardShoot: "Spacebar - Shoot",
-  gamepadTitle: "Gamepad -",
-  gamepadMove: "Axis - Move",
-  gamepadShoot: "X - Shoot",
 
   // Game over
   gameOverTitle: "GAME OVER",

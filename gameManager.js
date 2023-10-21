@@ -1,22 +1,18 @@
 export default class GameManager {
   constructor() {
     // Setting a different resolution may cause problems with the position of objects
-    // this.width = 1280;
-    // this.height = 720;
-    // this.aspectRatio = 16 / 9;
-
-    this.width = 1920;
-    this.height = 1080;
+    this.width = 1280;
+    this.height = 720;
     this.aspectRatio = 16 / 9;
   }
 
   area(player) {
     if (player.y < 75) player.y = 75;
-    if (player.y > this.height - 50) player.y = this.height - 50;
+    if (player.y >= this.height - 135) player.y = this.height - 135;
   }
 
   getScale() {
-    return (this.width * 1) / window.screen.width;
+    return 1;
   }
 
   resize(canvas, context, canvasWidth, canvasHeight) {

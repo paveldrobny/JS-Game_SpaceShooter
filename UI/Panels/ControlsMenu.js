@@ -7,12 +7,7 @@ export default class ControlsMenu {
   draw() {
     for (let i = 0; i < localization.keyboardInputText.length; i++) {
       const text = new Text(i, localization.keyboardInputText[i]);
-      text.draw(-80, i * 70 - 70 * 2.5, "right", i === 0 ? 50 : 30);
-    }
-
-    for (let i = 0; i < localization.gamepadInputText.length; i++) {
-      const text = new Text(i, localization.gamepadInputText[i]);
-      text.draw(80, i * 70 - 70 * 2.5, "left", i === 0 ? 50 : 30);
+      text.draw(0, i * 70 - 70 * 2.5, "center", i === 0 ? 50 : 30);
     }
 
     const buttonMain = new ButtonMain(

@@ -4,7 +4,7 @@ const gameManager = new GameManager();
 
 export default class HUD {
   constructor() {
-    this.safeZone = 10 * gameManager.getScale();
+    this.safeZone = 10 //* gameManager.getScale();
     this.healthBarWidth = gameManager.width - this.safeZone * 2;
     this.offsetX = 30;
   }

@@ -32,12 +32,6 @@ export const keyboardInputText = [
   lang[index].keyboardShoot,
 ];
 
-export const gamepadInputText = [
-  lang[index].gamepadTitle,
-  lang[index].gamepadMove,
-  lang[index].gamepadShoot,
-];
-
 export const achievements = [
   lang[index].achievementsUnlock,
   lang[index].firstStep,
@@ -50,10 +44,9 @@ export const backToMenu = lang[index].backToMenu;
 export const myBestScore = lang[index].myBestScore;
 
 export const dev = lang[index].dev;
-export const version = "v1.1";
+export const version = "v1.2";
 export const navigation = lang[index].navigation;
 export const confirm = lang[index].confirm;
-export const resolution = lang[index].resolution;
 
 export const gameOver = lang[index].gameOverTitle;
 export const gameOverScore = lang[index].gameOverScore;
@@ -64,7 +57,6 @@ const localization = {
   availableLanguagesText,
   reloadMessage,
   keyboardInputText,
-  gamepadInputText,
   backToMenu,
   myBestScore,
   getCoins,
@@ -73,7 +65,6 @@ const localization = {
   version,
   navigation,
   confirm,
-  resolution,
   gameOver,
   gameOverScore,
   gameOverText,

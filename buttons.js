@@ -1,9 +1,7 @@
 import { UI } from "./global.js";
 
 export default class Buttons {
-  constructor() {
-    this.myGamepad = navigator.getGamepads()[UI.gamepadValidIndex];
-  }
+  constructor() {}
 
   keyboard() {
     return {
@@ -18,18 +16,11 @@ export default class Buttons {
       Esc: 27,
       Enter: 13,
       Spacebar: 32,
-    };
-  }
-
-  gamepad() {
-    return {
-      Up: this.myGamepad.axes[1] === -1,
-      Left: this.myGamepad.axes[0] === -1,
-      Right: this.myGamepad.axes[0] === 1,
-      Down: this.myGamepad.axes[1] === 1,
-      B: this.myGamepad.buttons[1],
-      A: this.myGamepad.buttons[2],
-      X: this.myGamepad.buttons[3],
+      Dbg: 97,
+      DbgInvncbl: 98,
+      DbgCllsn: 99,
+      DbgEnmy: 100,
+      DbgOptmztn: 101,
     };
   }
 }

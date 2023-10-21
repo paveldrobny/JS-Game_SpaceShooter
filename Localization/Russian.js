@@ -1,8 +1,7 @@
 export default {
   dev: "Разработал Дробный Павел",
-  navigation: "W,S,Стрелочки или Ось (Геймпад) - Навигация",
-  confirm: "Enter или А (Геймпад) - Подтвердить",
-  resolution: "Рекомендуемое разрешение: 1920x1080",
+  navigation: "W,S,Стрелочки - Навигация",
+  confirm: "Enter - Подтвердить",
 
   // Главное меню
   play: "Играть",
@@ -17,7 +16,7 @@ export default {
 
   // Способности
   upHealth: "Купить 1 здоровье (1000 монет)",
-  getCoins: "Уничтожайте врагов, чтобы получать монеты. (1 враг - 10 монет)",
+  getCoins: "Уничтожайте врагов, чтобы получать монеты. (1 враг - 3 монет)",
 
   // Язык
   english: "Английский",
@@ -25,13 +24,9 @@ export default {
   reloadMessage: "Игра перезапустится после выбора языка",
 
   // Управление
-  keyboardTitle: "- Клавиатура",
+  keyboardTitle: "Клавиатура",
   keyboardMove: "W,S - Двигатся",
   keyboardShoot: "Spacebar - Стрелять",
-  gamepadTitle: "Геймпад -",
-  gamepadMove: "Ось - Двигатся",
-  gamepadShoot: "X - Стрелять",
-
   // Конец игры
   gameOverTitle: "КОНЕЦ ИГРЫ",
   gameOverScore: "Ваш счет: ",

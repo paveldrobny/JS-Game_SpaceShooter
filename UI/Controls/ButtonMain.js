@@ -14,7 +14,7 @@ export default class ButtonMain {
     const gameManager = new GameManager();
 
     const UIButton = {
-      space: 70,
+      space: 50,
       fontWeight: {
         normal: "normal",
         active: "bold",
@@ -33,7 +33,7 @@ export default class ButtonMain {
       this.UIIndex == this.i
         ? UIButton.fontWeight.active
         : UIButton.fontWeight.normal
-    } 45px sans-serif`;
+    } 30px sans-serif`;
     context.fillStyle =
       this.UIIndex == this.i ? UIButton.color.active : UIButton.color.normal;
     context.textAlign = "center";

@@ -5,7 +5,7 @@ export default class DebugMessage {
     this.text = options.text || "[empty text]";
     this.align = options.align || "center";
     this.color = options.color || "gray";
-    this.size = options.size || 20;
+    this.size = options.size || 18;
   }
 
   draw(context) {

@@ -13,7 +13,6 @@ export default class EnemyAverage extends Object {
     this.wingColor = "rgb(255,178,102)";
     this.wingWidth = 120;
     this.wingHeight = 15;
-    this.active = true;
     this.aligh = "right";
     this.tag = "EnemyAverage";
   }

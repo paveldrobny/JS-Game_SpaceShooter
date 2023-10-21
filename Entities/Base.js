@@ -1,4 +1,5 @@
 import GameManager from "../gameManager.js";
+import { DebugMode } from "../global.js";
 const gameManager = new GameManager();
 
 export default class ObjectBase {
@@ -45,14 +46,17 @@ export default class ObjectBase {
     context.fill();
 
     // Debug collision box
-    // context.fillStyle = "rgba(255,0,0,1)";
-    // context.fillRect(
-    //   this.x / gameManager.getScale(),
-    //   this.y / gameManager.getScale(),
-    //   this.w * gameManager.getScale(),
-    //   this.h * gameManager.getScale()
-    // );
-
+    if(DebugMode.isEnabled && DebugMode.collision)
+    {
+      context.fillStyle = "rgba(255,0,0,1)";
+      context.fillRect(
+          this.x / gameManager.getScale(),
+          this.y / gameManager.getScale(),
+          this.w * gameManager.getScale(),
+          this.h * gameManager.getScale()
+      );
+    }
+    
     // up wing
     context.fillStyle = this.wingColor;
     context.fillRect(
@@ -113,6 +117,8 @@ export default class ObjectBase {
   }
 
   damage() {
-    this.health -= 1;
+    if (!DebugMode.isEnabled || !DebugMode.invincible) {
+      this.health -= 1;
+    }
   }
 }

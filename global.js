@@ -1,9 +1,9 @@
 export const DebugMode = {
   isEnabled: false,
-  collision: {
-    player: false,
-    enemy: false,
-  },
+  invincible: false,
+  collision: false,
+  threeEnemy: false,
+  offOptimization: false
 };
 
 export const Game = {

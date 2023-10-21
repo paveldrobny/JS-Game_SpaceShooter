@@ -38,22 +38,15 @@ const hud = new HUD();
 const gameOverPanel = new GameOverMenu();
 const achievements = new Achievements();
 
-let isGamepadConnected = false;
 let keyState = [];
 let delayShoot = 0;
+let delaySpawn = 0;
+const SPAWN_TIMER = 150;
 let Bullets = [];
 let Enemies = [];
 let Particles = [];
 
-const ENEMY_EASY_SPAWN_DISTANCE = 20;
-const ENEMY_AVARAGE_SPAWN_DISTANCE = 80;
-const ENEMY_HIGH_SPAWN_DISTANCE = 140;
-
-let positionLogic = {
-  easyX: ENEMY_EASY_SPAWN_DISTANCE,
-  averageX: ENEMY_AVARAGE_SPAWN_DISTANCE,
-  highX: ENEMY_HIGH_SPAWN_DISTANCE,
-};
+const spawnPoints = [75, 210, 335, 460, 585];
 
 const messageData = [
   { x: gameManager.width - 15, y: 30, text: localization.dev, align: "right" },
@@ -76,6 +69,55 @@ const messageData = [
     align: "left",
   },
 ];
+
+const messageDbgData = [
+  {
+    x: 30,
+    y: 150,
+    align: "left",
+  },
+  {
+    x: 45,
+    y: 180,
+    align: "left",
+  },
+  {
+    x: 45,
+    y: 210,
+    align: "left",
+  },
+  {
+    x: 45,
+    y: 240,
+    align: "left",
+  },
+  {
+    x: 45,
+    y: 270,
+    align: "left",
+  },
+];
+
+const getDbgText = (i) => {
+  switch (i) {
+    case 0:
+      return `[numpad1] DEBUG MODE: ${DebugMode.isEnabled ? "ON" : "OFF"}`;
+    case 1:
+      return `- [numpad2] Invincible: ${DebugMode.invincible ? "ON" : "OFF"}`;
+    case 2:
+      return `- [numpad3] Show collision: ${
+        DebugMode.collision ? "ON" : "OFF"
+      }`;
+    case 3:
+      return `- [numpad4] Show three enemy: ${
+        DebugMode.threeEnemy ? "ON" : "OFF"
+      }`;
+    case 4:
+      return `- [numpad5] Visible out screen: ${
+        DebugMode.offOptimization ? "ON" : "OFF"
+      }`;
+  }
+};
 
 //#endregion
 
@@ -176,36 +218,26 @@ window.addEventListener("keydown", (e) => {
 
 window.addEventListener("keyup", (e) => {
   keyState[e.keyCode] = false;
-});
 
-window.addEventListener("gamepadconnected", function (e) {
-  isGamepadConnected = true;
-  console.log("✅ Gamepad connected:", e.gamepad);
-  loopGamepad();
-});
+  const buttons = new Buttons();
+  const btn = buttons.keyboard();
 
-window.addEventListener("gamepaddisconnected", function (e) {
-  isGamepadConnected = false;
+  if (e.keyCode == btn.Dbg) {
+    DebugMode.isEnabled = !DebugMode.isEnabled;
+  }
+  if (e.keyCode == btn.DbgInvncbl) {
+    DebugMode.invincible = !DebugMode.invincible;
+  }
+  if (e.keyCode == btn.DbgCllsn) {
+    DebugMode.collision = !DebugMode.collision;
+  }
+  if (e.keyCode == btn.DbgEnmy) {
+    DebugMode.threeEnemy = !DebugMode.threeEnemy;
+  }
+  if (e.keyCode == btn.DbgOptmztn) {
+    DebugMode.offOptimization = !DebugMode.offOptimization;
+  }
 });
-
-function loopGamepad() {
-  setInterval(function () {
-    if (isGamepadConnected) {
-      console.log(UI.gamepadValidIndex);
-      const buttons = new Buttons();
-      if (buttons.gamepad().A == undefined) {
-        UI.gamepadValidIndex += 1;
-      } else {
-        if (!Game.isPlay || Game.isGameOver) {
-          const buttons = new Buttons();
-          menuSelectorUp(buttons.gamepad().Up);
-          menuSelectorDown(buttons.gamepad().Down);
-          menuAccept(buttons.gamepad().A.pressed);
-        }
-      }
-    }
-  }, 100);
-}
 
 //#endregion
 
@@ -239,23 +271,6 @@ function playerMovementPC() {
   }
 }
 
-function playerMovementGamepad() {
-  const button = new Buttons();
-  const gamepad = button.gamepad();
-
-  if (gamepad.Up) {
-    player.y -= player.speed;
-  }
-  if (gamepad.Down) {
-    player.y += player.speed;
-  }
-  if (button.gamepad().X != undefined) {
-    if (gamepad.X.pressed) {
-      shoot();
-    }
-  }
-}
-
 function collisionCheck(a, b) {
   return (
     a.x < b.x + b.w && a.x + a.w > b.x && a.y < b.y + b.h && a.y + a.h > b.y
@@ -271,7 +286,7 @@ function collisionUpdate() {
         if (enemy.health <= 0) {
           achievementsCondition.Count.kill++;
           enemy.destroy();
-          Game.coins += 10;
+          Game.coins += 3;
           localStorage.setItem("coins", Game.coins);
         }
       }
@@ -291,19 +306,28 @@ const update = () => {
   context.clearRect(0, 0, gameManager.width, gameManager.height);
 
   gameManager.area(player);
+
+  if (DebugMode.isEnabled) {
+    for (let i = 0; i < messageDbgData.length; i++) {
+      new DebugMessage({
+        x: messageDbgData[i].x,
+        y: messageDbgData[i].y,
+        text: getDbgText(i),
+        align: messageDbgData[i].align,
+      }).draw(context);
+    }
+  }
+
   achievements.UI();
 
   // DebugMode
-  if (DebugMode.isEnabled) {
-    new Enemy(100, 100, 0).draw(context);
-    new Enemy(300, 100, 1).draw(context);
-    new Enemy(500, 100, 2).draw(context);
+  if (DebugMode.isEnabled && DebugMode.threeEnemy) {
+    new EnemyEasy(gameManager.width - 150, 190).draw(context);
+    new EnemyAverage(gameManager.width - 150, 320).draw(context);
+    new EnemyHigh(gameManager.width - 150, 450).draw(context);
   }
 
   playerMovementPC();
-  if (isGamepadConnected) {
-    playerMovementGamepad();
-  }
 
   if (Math.random() < 0.1) Particles.push(new Particle());
 
@@ -337,36 +361,38 @@ const update = () => {
     }
 
     // SPAWN SYSTEM
-    let positionY = Math.floor(Math.random() * (gameManager.height - 150)) + 50;
+    console.log(delaySpawn);
 
-    positionLogic.easyX -= 1;
-    positionLogic.averageX -= 1;
-    positionLogic.highX -= 1;
+    if (delaySpawn === 0) {
+      let positionY =
+        spawnPoints[(Math.random() * spawnPoints.length).toFixed(0)];
+      let random = Math.random() * 10;
 
-    if (
-      positionLogic.easyX !== positionLogic.averageX &&
-      positionLogic.easyX !== positionLogic.highX
-    ) {
-      if (positionLogic.easyX <= 0) {
-        Enemies.push(new EnemyEasy(gameManager.width, positionY));
-        positionLogic.easyX = ENEMY_EASY_SPAWN_DISTANCE;
+      if (random >= 3.1) {
+        delaySpawn = SPAWN_TIMER;
+        Enemies.push(new EnemyEasy(gameManager.width + 150, positionY));
       }
+
+      if (random >= 1 && random <= 3.0) {
+        delaySpawn = SPAWN_TIMER;
+        Enemies.push(new EnemyAverage(gameManager.width + 150, positionY));
+      }
+
+      if (random < 1) {
+        delaySpawn = SPAWN_TIMER;
+        Enemies.push(new EnemyHigh(gameManager.width + 150, positionY));
+      }
+    } else {
+      delaySpawn -= 10;
     }
 
-    if (positionLogic.averageX <= 0) {
-      Enemies.push(new EnemyAverage(gameManager.width, positionY));
-      positionLogic.averageX = ENEMY_AVARAGE_SPAWN_DISTANCE;
-    }
-
-    if (positionLogic.highX <= 0) {
-      Enemies.push(new EnemyHigh(gameManager.width, positionY));
-      positionLogic.highX = ENEMY_HIGH_SPAWN_DISTANCE;
-    }
-    ///////////////////////////////////
+    /////////////////////////////////
 
     Enemies.forEach(function (enemy) {
       if (enemy.x < -100) {
-        enemy.destroy();
+        if (!DebugMode.isEnabled || !DebugMode.offOptimization) {
+          enemy.destroy();
+        }
       }
       enemy.draw(context);
       enemy.move();
@@ -431,36 +457,14 @@ const update = () => {
         break;
     }
 
-    if (!DebugMode.isEnabled) {
-      messageData.forEach((message) => {
-        new DebugMessage({
-          x: message.x,
-          y: message.y,
-          text: message.text,
-          align: message.align,
-        }).draw(context);
-      });
-    }
-
-    new DebugMessage({
-      x: gameManager.width / 2,
-      y: gameManager.height - 180,
-      text: localization.resolution,
-      align: "center",
-    }).draw(context);
-
-    const buttonsGamepad = new Buttons();
-    new DebugMessage({
-      x: gameManager.width / 2,
-      y: gameManager.height - 35,
-      text: isGamepadConnected
-        ? `Gamepad connected: ${buttonsGamepad.myGamepad.id
-            .replace(/ /g, "")
-            .slice(0, 20)}...`
-        : "Gamepad not found",
-      align: "center",
-      color: isGamepadConnected ? "green" : "red",
-    }).draw(context);
+    messageData.forEach((message) => {
+      new DebugMessage({
+        x: message.x,
+        y: message.y,
+        text: message.text,
+        align: message.align,
+      }).draw(context);
+    });
   }
 
   requestAnimationFrame(update);

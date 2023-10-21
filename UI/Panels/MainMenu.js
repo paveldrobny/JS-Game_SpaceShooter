@@ -8,7 +8,7 @@ export default class MainMenu {
         i,
         localization.menuText[i],
         UI.mainMenuIndex,
-        3
+        2.8
       );
       buttonMain.draw();
     }
