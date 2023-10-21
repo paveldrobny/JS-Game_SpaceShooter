@@ -11,13 +11,13 @@ export default class Particle {
     this.y =
       Game.isPlay && !Game.isGameOver ? Math.random() * gameManager.height : 0;
     this.xVel = 5;
-    this.yVel = !Game.isGameOver ? 2 : 15;
+    this.yVel = !Game.isGameOver ? 2 : 20;
     this.w = !Game.isGameOver
       ? 4 * gameManager.getScale()
       : 6 * gameManager.getScale();
     this.h = !Game.isGameOver
       ? 4 * gameManager.getScale()
-      : 6 * gameManager.getScale();
+      : 5 * gameManager.getScale();
     this.color = !Game.isGameOver ? "rgba(255,255,255,0.5" : "red";
     this.active = true;
   }
