@@ -353,6 +353,9 @@ const update = () => {
 
   if (Game.isPlay === true && Game.isGameOver === false) {
     Bullets.forEach(function (bullet) {
+      if (bullet.x > gameManager.width) {
+        bullet.destroy();
+      }
       bullet.update();
     });
 
