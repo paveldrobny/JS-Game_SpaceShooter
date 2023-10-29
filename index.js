@@ -46,7 +46,7 @@ let Bullets = [];
 let Enemies = [];
 let Particles = [];
 
-const spawnPoints = [75, 210, 335, 460, 585];
+const spawnPoints = [75, 130, 185, 240, 295, 350, 405, 460, 515, 570, 610];
 
 const messageData = [
   { x: gameManager.width - 15, y: 30, text: localization.dev, align: "right" },
@@ -109,7 +109,7 @@ const getDbgText = (i) => {
         DebugMode.collision ? "ON" : "OFF"
       }`;
     case 3:
-      return `- [numpad4] Show three enemy: ${
+      return `- [numpad4] Show spawn position: ${
         DebugMode.threeEnemy ? "ON" : "OFF"
       }`;
     case 4:
@@ -322,9 +322,17 @@ const update = () => {
 
   // DebugMode
   if (DebugMode.isEnabled && DebugMode.threeEnemy) {
-    new EnemyEasy(gameManager.width - 150, 190).draw(context);
-    new EnemyAverage(gameManager.width - 150, 320).draw(context);
-    new EnemyHigh(gameManager.width - 150, 450).draw(context);
+    new EnemyAverage(gameManager.width - 260, spawnPoints[0]).draw(context);
+    new EnemyHigh(gameManager.width - 110, spawnPoints[1]).draw(context);
+    new EnemyEasy(gameManager.width - 410, spawnPoints[2]).draw(context);
+    new EnemyAverage(gameManager.width - 260, spawnPoints[3]).draw(context);
+    new EnemyHigh(gameManager.width - 110, spawnPoints[4]).draw(context);
+    new EnemyEasy(gameManager.width - 410, spawnPoints[5]).draw(context);
+    new EnemyAverage(gameManager.width - 260, spawnPoints[6]).draw(context);
+    new EnemyHigh(gameManager.width - 110, spawnPoints[7]).draw(context);
+    new EnemyEasy(gameManager.width - 410, spawnPoints[8]).draw(context);
+    new EnemyAverage(gameManager.width - 260, spawnPoints[9]).draw(context);
+    new EnemyHigh(gameManager.width - 110, spawnPoints[10]).draw(context);
   }
 
   playerMovementPC();
@@ -361,8 +369,6 @@ const update = () => {
     }
 
     // SPAWN SYSTEM
-    console.log(delaySpawn);
-
     if (delaySpawn === 0) {
       let positionY =
         spawnPoints[(Math.random() * spawnPoints.length).toFixed(0)];
@@ -370,17 +376,17 @@ const update = () => {
 
       if (random >= 3.1) {
         delaySpawn = SPAWN_TIMER;
-        Enemies.push(new EnemyEasy(gameManager.width + 150, positionY));
+        Enemies.push(new EnemyEasy(gameManager.width + 35, positionY));
       }
 
       if (random >= 1 && random <= 3.0) {
         delaySpawn = SPAWN_TIMER;
-        Enemies.push(new EnemyAverage(gameManager.width + 150, positionY));
+        Enemies.push(new EnemyAverage(gameManager.width + 35, positionY));
       }
 
       if (random < 1) {
         delaySpawn = SPAWN_TIMER;
-        Enemies.push(new EnemyHigh(gameManager.width + 150, positionY));
+        Enemies.push(new EnemyHigh(gameManager.width + 35, positionY));
       }
     } else {
       delaySpawn -= 10;

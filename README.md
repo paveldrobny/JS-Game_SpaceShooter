@@ -1,5 +1,9 @@
 # JS-Game: Space shooter
 
+## v1.5
+- Changed
+  - Anti-abuse spawn system
+
 ## v1.4
 - Changed
   - 1 enemy = 3 coins
