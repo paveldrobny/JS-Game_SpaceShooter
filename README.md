@@ -1,8 +1,8 @@
 # JS-Game: Space shooter
 
 ## v1.5
-- Added
-  - Anti-abuse spawn system
+- Changed
+  - Anti-AFK spawn system
 
 ## v1.4
 - Changed
