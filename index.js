@@ -301,10 +301,16 @@ function collisionUpdate() {
   });
 }
 
+const targetFPS = 60;
+const frameDuration = 1000 / targetFPS;
+let lastTime = 0;
+
 //#region UPDATE
 const update = () => {
   context.clearRect(0, 0, gameManager.width, gameManager.height);
 
+  if (time - lastTime >= frameDuration) {
+    lastTime = time;
   gameManager.area(player);
 
   if (DebugMode.isEnabled) {
@@ -474,6 +480,7 @@ const update = () => {
         align: message.align,
       }).draw(context);
     });
+  }
   }
 
   requestAnimationFrame(update);
