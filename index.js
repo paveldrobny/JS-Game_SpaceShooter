@@ -105,17 +105,14 @@ const getDbgText = (i) => {
     case 1:
       return `- [numpad2] Invincible: ${DebugMode.invincible ? "ON" : "OFF"}`;
     case 2:
-      return `- [numpad3] Show collision: ${
-        DebugMode.collision ? "ON" : "OFF"
-      }`;
+      return `- [numpad3] Show collision: ${DebugMode.collision ? "ON" : "OFF"
+        }`;
     case 3:
-      return `- [numpad4] Show spawn position: ${
-        DebugMode.threeEnemy ? "ON" : "OFF"
-      }`;
+      return `- [numpad4] Show spawn position: ${DebugMode.threeEnemy ? "ON" : "OFF"
+        }`;
     case 4:
-      return `- [numpad5] Visible out screen: ${
-        DebugMode.offOptimization ? "ON" : "OFF"
-      }`;
+      return `- [numpad5] Visible out screen: ${DebugMode.offOptimization ? "ON" : "OFF"
+        }`;
   }
 };
 
@@ -301,191 +298,193 @@ function collisionUpdate() {
   });
 }
 
-const targetFPS = 60;
-const frameDuration = 1000 / targetFPS;
 let lastTime = 0;
+const fps = 60;
+const frameDuration = 1000 / fps;
 
 //#region UPDATE
-const update = () => {
-  context.clearRect(0, 0, gameManager.width, gameManager.height);
+const update = (timestamp) => {
+  if (timestamp - lastTime >= frameDuration) {
+    lastTime = timestamp;
 
-  if (time - lastTime >= frameDuration) {
-    lastTime = time;
-  gameManager.area(player);
+    context.clearRect(0, 0, gameManager.width, gameManager.height);
 
-  if (DebugMode.isEnabled) {
-    for (let i = 0; i < messageDbgData.length; i++) {
-      new DebugMessage({
-        x: messageDbgData[i].x,
-        y: messageDbgData[i].y,
-        text: getDbgText(i),
-        align: messageDbgData[i].align,
-      }).draw(context);
-    }
-  }
 
-  achievements.UI();
+    gameManager.area(player);
 
-  // DebugMode
-  if (DebugMode.isEnabled && DebugMode.threeEnemy) {
-    new EnemyAverage(gameManager.width - 260, spawnPoints[0]).draw(context);
-    new EnemyHigh(gameManager.width - 110, spawnPoints[1]).draw(context);
-    new EnemyEasy(gameManager.width - 410, spawnPoints[2]).draw(context);
-    new EnemyAverage(gameManager.width - 260, spawnPoints[3]).draw(context);
-    new EnemyHigh(gameManager.width - 110, spawnPoints[4]).draw(context);
-    new EnemyEasy(gameManager.width - 410, spawnPoints[5]).draw(context);
-    new EnemyAverage(gameManager.width - 260, spawnPoints[6]).draw(context);
-    new EnemyHigh(gameManager.width - 110, spawnPoints[7]).draw(context);
-    new EnemyEasy(gameManager.width - 410, spawnPoints[8]).draw(context);
-    new EnemyAverage(gameManager.width - 260, spawnPoints[9]).draw(context);
-    new EnemyHigh(gameManager.width - 110, spawnPoints[10]).draw(context);
-  }
-
-  playerMovementPC();
-
-  if (Math.random() < 0.1) Particles.push(new Particle());
-
-  Particles.forEach(function (particle) {
-    particle.update();
-  });
-
-  Particles = Particles.filter(function (particle) {
-    return particle.active;
-  });
-
-  Particles.forEach(function (particle) {
-    particle.draw(context);
-  });
-
-  if (Game.isPlay === true && Game.isGameOver === false) {
-    Bullets.forEach(function (bullet) {
-      if (bullet.x > gameManager.width) {
-        bullet.destroy();
+    if (DebugMode.isEnabled) {
+      for (let i = 0; i < messageDbgData.length; i++) {
+        new DebugMessage({
+          x: messageDbgData[i].x,
+          y: messageDbgData[i].y,
+          text: getDbgText(i),
+          align: messageDbgData[i].align,
+        }).draw(context);
       }
-      bullet.update();
-    });
-
-    Bullets = Bullets.filter(function (bullet) {
-      return bullet.active;
-    });
-
-    Bullets.forEach(function (bullet) {
-      bullet.draw(context);
-    });
-
-    if (delayShoot > 0) {
-      delayShoot -= 10;
     }
 
-    // SPAWN SYSTEM
-    if (delaySpawn === 0) {
-      let positionY =
-        spawnPoints[(Math.random() * spawnPoints.length).toFixed(0)];
-      let random = Math.random() * 10;
+    achievements.UI();
 
-      if (random >= 3.1) {
-        delaySpawn = SPAWN_TIMER;
-        Enemies.push(new EnemyEasy(gameManager.width + 35, positionY));
-      }
-
-      if (random >= 1 && random <= 3.0) {
-        delaySpawn = SPAWN_TIMER;
-        Enemies.push(new EnemyAverage(gameManager.width + 35, positionY));
-      }
-
-      if (random < 1) {
-        delaySpawn = SPAWN_TIMER;
-        Enemies.push(new EnemyHigh(gameManager.width + 35, positionY));
-      }
-    } else {
-      delaySpawn -= 10;
+    // DebugMode
+    if (DebugMode.isEnabled && DebugMode.threeEnemy) {
+      new EnemyAverage(gameManager.width - 260, spawnPoints[0]).draw(context);
+      new EnemyHigh(gameManager.width - 110, spawnPoints[1]).draw(context);
+      new EnemyEasy(gameManager.width - 410, spawnPoints[2]).draw(context);
+      new EnemyAverage(gameManager.width - 260, spawnPoints[3]).draw(context);
+      new EnemyHigh(gameManager.width - 110, spawnPoints[4]).draw(context);
+      new EnemyEasy(gameManager.width - 410, spawnPoints[5]).draw(context);
+      new EnemyAverage(gameManager.width - 260, spawnPoints[6]).draw(context);
+      new EnemyHigh(gameManager.width - 110, spawnPoints[7]).draw(context);
+      new EnemyEasy(gameManager.width - 410, spawnPoints[8]).draw(context);
+      new EnemyAverage(gameManager.width - 260, spawnPoints[9]).draw(context);
+      new EnemyHigh(gameManager.width - 110, spawnPoints[10]).draw(context);
     }
 
-    /////////////////////////////////
+    playerMovementPC();
 
-    Enemies.forEach(function (enemy) {
-      if (enemy.x < -100) {
-        if (!DebugMode.isEnabled || !DebugMode.offOptimization) {
-          enemy.destroy();
+    if (Math.random() < 0.1) Particles.push(new Particle());
+
+    Particles.forEach(function (particle) {
+      particle.update();
+    });
+
+    Particles = Particles.filter(function (particle) {
+      return particle.active;
+    });
+
+    Particles.forEach(function (particle) {
+      particle.draw(context);
+    });
+
+    if (Game.isPlay === true && Game.isGameOver === false) {
+      Bullets.forEach(function (bullet) {
+        if (bullet.x > gameManager.width) {
+          bullet.destroy();
         }
+        bullet.update();
+      });
+
+      Bullets = Bullets.filter(function (bullet) {
+        return bullet.active;
+      });
+
+      Bullets.forEach(function (bullet) {
+        bullet.draw(context);
+      });
+
+      if (delayShoot > 0) {
+        delayShoot -= 10;
       }
-      enemy.draw(context);
-      enemy.move();
-    });
 
-    Enemies = Enemies.filter(function (enemy) {
-      return enemy.active;
-    });
+      // SPAWN SYSTEM
+      if (delaySpawn === 0) {
+        let positionY =
+          spawnPoints[(Math.random() * spawnPoints.length).toFixed(0)];
+        let random = Math.random() * 10;
 
-    player.draw(context);
+        if (random >= 3.1) {
+          delaySpawn = SPAWN_TIMER;
+          Enemies.push(new EnemyEasy(gameManager.width + 35, positionY));
+        }
 
-    collisionUpdate();
-    hud.draw(context, player);
-    Game.score += 1;
+        if (random >= 1 && random <= 3.0) {
+          delaySpawn = SPAWN_TIMER;
+          Enemies.push(new EnemyAverage(gameManager.width + 35, positionY));
+        }
 
-    achievements.checkReach();
-    achievements.checkKill();
+        if (random < 1) {
+          delaySpawn = SPAWN_TIMER;
+          Enemies.push(new EnemyHigh(gameManager.width + 35, positionY));
+        }
+      } else {
+        delaySpawn -= 10;
+      }
 
-    if (player.health <= 0) {
-      Game.isGameOver = true;
+      /////////////////////////////////
+
+      Enemies.forEach(function (enemy) {
+        if (enemy.x < -100) {
+          if (!DebugMode.isEnabled || !DebugMode.offOptimization) {
+            enemy.destroy();
+          }
+        }
+        enemy.draw(context);
+        enemy.move();
+      });
+
+      Enemies = Enemies.filter(function (enemy) {
+        return enemy.active;
+      });
+
+      player.draw(context);
+
+      collisionUpdate();
+      hud.draw(context, player);
+      Game.score += 1;
+
+      achievements.checkReach();
+      achievements.checkKill();
+
+      if (player.health <= 0) {
+        Game.isGameOver = true;
+      }
+    } else if (Game.isGameOver) {
+      if (localStorage.getItem("score") === null) {
+        localStorage.setItem("score", Game.score);
+        Game.myBestScore = Game.score;
+      }
+      if (parseInt(localStorage.getItem("score")) <= Game.score) {
+        localStorage.setItem("score", Game.score);
+        Game.myBestScore = Game.score;
+      }
+      UI.panelUIIndex = 99;
+      gameOverPanel.draw();
+      Bullets = [];
+      Enemies = [];
+
+      if (localStorage.getItem("health") !== null) {
+        player.health = parseInt(localStorage.getItem("health"));
+      } else {
+        player.health = 3;
+      }
+
+      achievementsCondition.Count.reach = 0;
+    } else if (!Game.isPlay) {
+      switch (UI.panelUIIndex) {
+        case 0:
+          mainMenuPanel.draw();
+          break;
+        case 1:
+          highScoreMenu.draw();
+          break;
+        case 2:
+          abilitiesMenu.draw();
+          break;
+        case 3:
+          achievementsMenu.draw();
+          break;
+        case 4:
+          languageMenu.draw();
+          break;
+        case 5:
+          controlsMenuPanel.draw();
+          break;
+      }
+
+      messageData.forEach((message) => {
+        new DebugMessage({
+          x: message.x,
+          y: message.y,
+          text: message.text,
+          align: message.align,
+        }).draw(context);
+      });
     }
-  } else if (Game.isGameOver) {
-    if (localStorage.getItem("score") === null) {
-      localStorage.setItem("score", Game.score);
-      Game.myBestScore = Game.score;
-    }
-    if (parseInt(localStorage.getItem("score")) <= Game.score) {
-      localStorage.setItem("score", Game.score);
-      Game.myBestScore = Game.score;
-    }
-    UI.panelUIIndex = 99;
-    gameOverPanel.draw();
-    Bullets = [];
-    Enemies = [];
-
-    if (localStorage.getItem("health") !== null) {
-      player.health = parseInt(localStorage.getItem("health"));
-    } else {
-      player.health = 3;
-    }
-
-    achievementsCondition.Count.reach = 0;
-  } else if (!Game.isPlay) {
-    switch (UI.panelUIIndex) {
-      case 0:
-        mainMenuPanel.draw();
-        break;
-      case 1:
-        highScoreMenu.draw();
-        break;
-      case 2:
-        abilitiesMenu.draw();
-        break;
-      case 3:
-        achievementsMenu.draw();
-        break;
-      case 4:
-        languageMenu.draw();
-        break;
-      case 5:
-        controlsMenuPanel.draw();
-        break;
-    }
-
-    messageData.forEach((message) => {
-      new DebugMessage({
-        x: message.x,
-        y: message.y,
-        text: message.text,
-        align: message.align,
-      }).draw(context);
-    });
-  }
   }
 
   requestAnimationFrame(update);
 };
 
-update();
+requestAnimationFrame(update);
 
 //#endregion
