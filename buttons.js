@@ -1,8 +1,6 @@
-import { UI } from "./Global.js";
-
 export default class Buttons {
   constructor() {}
-
+ 
   keyboard() {
     return {
       W: 87,

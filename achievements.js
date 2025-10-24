@@ -16,6 +16,7 @@ export class Achievements {
     this.currentMessageTime = this.MESSAGE_TIME;
     this.isShowUI = false;
 
+    // update
     this.data = [
       {
         title: () => l10n.achievements()[1],

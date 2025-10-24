@@ -35,7 +35,7 @@ export const UI = {
   highMenuIndex: 0,
   abilitiesIndex: 1,
   achievementsIndex: 0,
-  languageMenuIndex: 2,
+  languageMenuIndex: 2, // back button
   controlsMenuIndex: 0,
   gameOverMenuIndex: 0,
   gamepadValidIndex: 0,

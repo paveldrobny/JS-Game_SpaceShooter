@@ -19,6 +19,8 @@ export default class GameManager {
     const windowWidth = window.innerWidth;
     const windowHeight = window.innerHeight;
     const aspectRatio = this.aspectRatio;
+
+    // No longer looks blurry on screens larger than ~720p
     const dpr = window.devicePixelRatio || 1;
 
     let displayWidth = windowWidth;
