@@ -1,5 +1,5 @@
-import GameManager from "../GameManager.js";
-import { DebugMode } from "../Global.js";
+import GameManager from "../gameManager.js";
+import { DebugMode } from "../global.js";
 const gameManager = new GameManager();
 
 export default class ObjectBase {

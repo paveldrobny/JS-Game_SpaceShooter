@@ -1,5 +1,5 @@
 import l10n from "../../l10n/Parse.js";
-import { Game, UI } from "../../Global.js";
+import { Game, UI } from "../../global.js";
 import ButtonMain from "../Controls/ButtonMain.js";
 export default class MainMenu {
   draw() {

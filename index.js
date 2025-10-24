@@ -1,11 +1,11 @@
-import GameManager from "./GameManager.js";
+import GameManager from "./gameManager.js";
 import Player from "./Entities/Player.js";
 import EnemyEasy from "./Entities/EnemyEasy.js";
 import EnemyAverage from "./Entities/EnemyAverage.js";
 import EnemyHigh from "./Entities/EnemyHigh.js";
 import MainMenu from "./UI/Panels/MainMenu.js";
 import ControlsMenu from "./UI/Panels/ControlsMenu.js";
-import { DebugMode, Game, UI } from "./Global.js";
+import { DebugMode, Game, UI } from "./global.js";
 import HUD from "./UI/Panels/HUD.js";
 import GameOverMenu from "./UI/Panels/GameOver.js";
 import HighScoreMenu from "./UI/Panels/HighScoreMenu.js";
@@ -14,8 +14,8 @@ import Particle from "./Entities/Particle.js";
 import DebugMessage from "./UI/DebugMessage.js";
 import l10n from "./l10n/Parse.js";
 import LanguageMenu from "./UI/Panels/LanguageMenu.js";
-import Buttons from "./Buttons.js";
-import { Achievements, achievementsCondition } from "./Achievements.js";
+import Buttons from "./buttons.js";
+import { Achievements, achievementsCondition } from "./achievements.js";
 import AchievementsMenu from "./UI/Panels/AchievementsMenu.js";
 import AbilitiesMenu from "./UI/Panels/AbilitiesMenu.js";
 

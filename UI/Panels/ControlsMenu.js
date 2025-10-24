@@ -1,5 +1,5 @@
 import l10n from "../../l10n/Parse.js";
-import { UI } from "../../Global.js";
+import { UI } from "../../global.js";
 import ButtonMain from "../Controls/ButtonMain.js";
 import Text from "../Controls/Text.js";
 

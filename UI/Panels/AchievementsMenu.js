@@ -1,6 +1,6 @@
 import l10n from "../../l10n/Parse.js";
-import { Achievements } from "../../Achievements.js";
-import { Game, UI } from "../../Global.js";
+import { Achievements } from "../../achievements.js";
+import { Game, UI } from "../../global.js";
 import ButtonMain from "../Controls/ButtonMain.js";
 import Text from "../Controls/Text.js";
 

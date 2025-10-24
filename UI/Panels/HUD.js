@@ -1,5 +1,5 @@
-import GameManager from "../../GameManager.js";
-import { Game } from "../../Global.js";
+import GameManager from "../../gameManager.js";
+import { Game } from "../../global.js";
 const gameManager = new GameManager();
 
 export default class HUD {

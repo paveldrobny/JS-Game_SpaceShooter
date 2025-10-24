@@ -1,6 +1,6 @@
 import l10n from "../../l10n/Parse.js";
-import GameManager from "../../GameManager.js";
-import { Game, UI } from "../../Global.js";
+import GameManager from "../../gameManager.js";
+import { Game, UI } from "../../global.js";
 import ButtonMain from "../Controls/ButtonMain.js";
 import DebugMessage from "../DebugMessage.js";
 

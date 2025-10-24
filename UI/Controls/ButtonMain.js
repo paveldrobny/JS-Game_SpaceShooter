@@ -1,4 +1,4 @@
-import GameManager from "../../GameManager.js";
+import GameManager from "../../gameManager.js";
 
 export default class ButtonMain {
   constructor(i, text, UIIndex, posY) {
