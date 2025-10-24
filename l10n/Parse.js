@@ -1,4 +1,4 @@
-import { UI } from "../Global.js";
+import { UI } from "../global.js";
 import English from "./English.js";
 import Russian from "./Russian.js";
 

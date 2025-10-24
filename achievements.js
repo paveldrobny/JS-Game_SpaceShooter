@@ -1,6 +1,6 @@
 import l10n from "./l10n/Parse.js";
 import Text from "./UI/Controls/Text.js";
-import GameManager from "./GameManager.js";
+import GameManager from "./gameManager.js";
 
 export const achievementsCondition = {
   Count: {
