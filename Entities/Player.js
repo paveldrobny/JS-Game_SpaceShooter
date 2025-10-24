@@ -1,4 +1,4 @@
-import { Game } from "../global.js";
+import { Game } from "../Global.js";
 import Object from "./Base.js";
 
 export default class Player extends Object {

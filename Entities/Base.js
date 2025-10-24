@@ -1,5 +1,5 @@
-import GameManager from "../gameManager.js";
-import { DebugMode } from "../global.js";
+import GameManager from "../GameManager.js";
+import { DebugMode } from "../Global.js";
 const gameManager = new GameManager();
 
 export default class ObjectBase {
@@ -10,7 +10,7 @@ export default class ObjectBase {
     this.h = 0;
     this.r = 100;
     this.speed = 15;
-    this.health = 3;
+    this.health = 1;
     this.color = color;
     this.wingColor = "rgb(102,102,255)";
     this.wingWidth = 120;

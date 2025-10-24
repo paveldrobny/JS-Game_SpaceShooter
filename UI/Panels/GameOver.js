@@ -1,20 +1,20 @@
-import { Game, UI } from "../../global.js";
+import { Game, UI } from "../../Global.js";
 import ButtonMain from "../Controls/ButtonMain.js";
 import Text from "../Controls/Text.js";
-import localization from "../../Localization/Parse.js";
+import l10n from "../../l10n/Parse.js";
 
 export default class GameOverMenu {
   draw() {
-    const text = new Text(0, localization.gameOver);
+    const text = new Text(0, l10n.gameOver());
     text.draw(0, -230, "center", 55);
 
-    const textScore = new Text(0, `${localization.gameOverScore + Game.score}`);
+    const textScore = new Text(0, `${l10n.gameOverScore() + Game.score}`);
     textScore.draw(0, -180, "center", 35);
 
-    for (let i = 0; i < localization.gameOverText.length; i++) {
+    for (let i = 0; i < l10n.gameOverText().length; i++) {
       const buttonMain = new ButtonMain(
         i,
-        localization.gameOverText[i],
+        l10n.gameOverText()[i],
         UI.gameOverMenuIndex,
         0.8
       );

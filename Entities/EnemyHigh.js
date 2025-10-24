@@ -1,5 +1,5 @@
 import Object from "./Base.js";
-import GameManager from "../gameManager.js";
+import GameManager from "../GameManager.js";
 
 const gameManager = new GameManager();
 

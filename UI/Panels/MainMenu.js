@@ -1,12 +1,13 @@
-import localization from "../../Localization/Parse.js";
-import { Game, UI } from "../../global.js";
+import l10n from "../../l10n/Parse.js";
+import { Game, UI } from "../../Global.js";
 import ButtonMain from "../Controls/ButtonMain.js";
 export default class MainMenu {
   draw() {
-    for (let i = 0; i < localization.menuText.length; i++) {
+    const items = l10n.getMenuText();
+    for (let i = 0; i < items.length; i++) {
       const buttonMain = new ButtonMain(
         i,
-        localization.menuText[i],
+        items[i],
         UI.mainMenuIndex,
         2.8
       );
@@ -14,11 +15,17 @@ export default class MainMenu {
     }
   }
 
-  select() {
+  select(player) {
     switch (UI.mainMenuIndex) {
       case 0:
         Game.isPlay = true;
         Game.isGameOver = false;
+
+        if (localStorage.getItem("health") !== null) {
+          player.health = parseInt(localStorage.getItem("health"));
+        } else {
+          player.health = 3;
+        }
         break;
       case 1:
         UI.panelUIIndex = 1;

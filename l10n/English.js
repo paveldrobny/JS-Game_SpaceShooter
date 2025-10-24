@@ -1,6 +1,6 @@
 export default {
   dev: "Developed by Pavel Drobny",
-  navigation: "W,S, Arrows - Navigation",
+  navigation: "W,S / Arrows - Navigation",
   confirm: "Enter - Confirm",
 
   // Main menu
@@ -16,16 +16,16 @@ export default {
 
   // Abilities
   upHealth: "Buy 1 health (1000 coins)",
-  getCoins: "Destroy enemies to get coins. (1 enemy - 3 coins)",
+  getCoins: "Destroy enemies to get coins (1 enemy - 3 coins)",
 
   // Language
   english: "English",
-  russian: "Russian",
+  russian: "Русский",
   reloadMessage: "The game will restart after selecting the language",
 
   // Controls
   keyboardTitle: "Keyboard",
-  keyboardMove: "W,S - Move",
+  keyboardMove: "W,S or Arrow Up / Down - Move",
   keyboardShoot: "Spacebar - Shoot",
 
   // Game over
@@ -38,8 +38,8 @@ export default {
   achievementsUnlock: "Achievements unlock",
   // 0
   firstStep: "FIRST STEPS",
-  firstStepDesc: "Reach 1000 meters",
+  firstStepDesc: "Fly over 1000 meters",
   // 1
-  trippleKill: "TRIPPLE KILL",
+  trippleKill: "TRIPLE ELIMINATION",
   trippleKillDesc: "Destroy 3 enemies",
 };

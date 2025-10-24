@@ -1,5 +1,13 @@
 # JS-Game: Space shooter
 
+## v1.6
+- Changed
+  - The game no longer looks blurry on screens larger than ~720p
+- Fixed
+  - Changing the localization and purchasing in the "Abilities" section no longer require a game restart
+  - Some localization text has been changed
+
+
 ## v1.5
 - Changed
   - Anti-AFK spawn system

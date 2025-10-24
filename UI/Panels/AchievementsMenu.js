@@ -1,13 +1,13 @@
-import localization from "../../Localization/Parse.js";
-import { Achievements } from "../../achievements.js";
-import { Game, UI } from "../../global.js";
+import l10n from "../../l10n/Parse.js";
+import { Achievements } from "../../Achievements.js";
+import { Game, UI } from "../../Global.js";
 import ButtonMain from "../Controls/ButtonMain.js";
 import Text from "../Controls/Text.js";
 
 export default class AchievementsMenu {
   draw() {
     const achievements = new Achievements();
-    const ac = localization.achievements;
+    const ac = l10n.achievements();
     const achievementsData = [ac[1], ac[3]];
 
     for (let i = 0; i < achievementsData.length; i++) {
@@ -24,7 +24,7 @@ export default class AchievementsMenu {
 
     const buttonMain = new ButtonMain(
       0,
-      localization.backToMenu,
+      l10n.backToMenu(),
       UI.achievementsIndex,
       -1
     );

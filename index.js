@@ -1,21 +1,21 @@
-import GameManager from "./gameManager.js";
+import GameManager from "./GameManager.js";
 import Player from "./Entities/Player.js";
 import EnemyEasy from "./Entities/EnemyEasy.js";
 import EnemyAverage from "./Entities/EnemyAverage.js";
 import EnemyHigh from "./Entities/EnemyHigh.js";
 import MainMenu from "./UI/Panels/MainMenu.js";
 import ControlsMenu from "./UI/Panels/ControlsMenu.js";
-import { DebugMode, Game, UI } from "./global.js";
+import { DebugMode, Game, UI } from "./Global.js";
 import HUD from "./UI/Panels/HUD.js";
 import GameOverMenu from "./UI/Panels/GameOver.js";
 import HighScoreMenu from "./UI/Panels/HighScoreMenu.js";
 import Bullet from "./Entities/Bullet.js";
 import Particle from "./Entities/Particle.js";
 import DebugMessage from "./UI/DebugMessage.js";
-import localization from "./Localization/Parse.js";
+import l10n from "./l10n/Parse.js";
 import LanguageMenu from "./UI/Panels/LanguageMenu.js";
-import Buttons from "./buttons.js";
-import { Achievements, achievementsCondition } from "./achievements.js";
+import Buttons from "./Buttons.js";
+import { Achievements, achievementsCondition } from "./Achievements.js";
 import AchievementsMenu from "./UI/Panels/AchievementsMenu.js";
 import AbilitiesMenu from "./UI/Panels/AbilitiesMenu.js";
 
@@ -48,27 +48,6 @@ let Particles = [];
 
 const spawnPoints = [75, 130, 185, 240, 295, 350, 405, 460, 515, 570, 610];
 
-const messageData = [
-  { x: gameManager.width - 15, y: 30, text: localization.dev, align: "right" },
-  {
-    x: gameManager.width - 15,
-    y: gameManager.height - 15,
-    text: localization.version,
-    align: "right",
-  },
-  {
-    x: 15,
-    y: gameManager.height - 50,
-    text: localization.navigation,
-    align: "left",
-  },
-  {
-    x: 15,
-    y: gameManager.height - 15,
-    text: localization.confirm,
-    align: "left",
-  },
-];
 
 const messageDbgData = [
   {
@@ -150,22 +129,22 @@ function menuSelectorDown(condition) {
   if (condition) {
     switch (UI.panelUIIndex) {
       case 0:
-        if (UI.mainMenuIndex < localization.menuText.length - 1)
+        if (UI.mainMenuIndex < l10n.getMenuText().length - 1)
           UI.mainMenuIndex++;
         break;
       case 2:
-        if (UI.abilitiesIndex < localization.abilitiesText.length - 1)
+        if (UI.abilitiesIndex < l10n.abilitiesText().length - 1)
           UI.abilitiesIndex++;
         break;
       case 4:
         if (
           UI.languageMenuIndex <
-          localization.availableLanguagesText.length - 1
+          l10n.getAvailableLanguagesText().length - 1
         )
           UI.languageMenuIndex++;
         break;
       case 99:
-        if (UI.gameOverMenuIndex < localization.gameOverText.length - 1)
+        if (UI.gameOverMenuIndex < l10n.gameOverText().length - 1)
           UI.gameOverMenuIndex++;
         break;
     }
@@ -176,7 +155,7 @@ function menuAccept(condition) {
   if (condition) {
     switch (UI.panelUIIndex) {
       case 0:
-        mainMenuPanel.select();
+        mainMenuPanel.select(player);
         break;
       case 1:
         highScoreMenu.select();
@@ -308,7 +287,6 @@ const update = (timestamp) => {
     lastTime = timestamp;
 
     context.clearRect(0, 0, gameManager.width, gameManager.height);
-
 
     gameManager.area(player);
 
@@ -470,6 +448,28 @@ const update = (timestamp) => {
           controlsMenuPanel.draw();
           break;
       }
+
+      const messageData = [
+        { x: gameManager.width - 15, y: 30, text: l10n.dev(), align: "right" },
+        {
+          x: gameManager.width - 15,
+          y: gameManager.height - 15,
+          text: l10n.version,
+          align: "right",
+        },
+        {
+          x: 15,
+          y: gameManager.height - 50,
+          text: l10n.navigation(),
+          align: "left",
+        },
+        {
+          x: 15,
+          y: gameManager.height - 15,
+          text: l10n.confirm(),
+          align: "left",
+        },
+      ];
 
       messageData.forEach((message) => {
         new DebugMessage({

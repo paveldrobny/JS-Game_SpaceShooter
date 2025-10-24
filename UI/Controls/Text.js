@@ -1,4 +1,4 @@
-import GameManager from "../../gameManager.js";
+import GameManager from "../../GameManager.js";
 
 export default class Text {
   constructor(i, text, posY) {

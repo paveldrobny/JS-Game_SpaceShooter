@@ -1,6 +1,6 @@
 export default {
   dev: "Разработал Дробный Павел",
-  navigation: "W,S,Стрелочки - Навигация",
+  navigation: "W,S / Стрелочки - Навигация",
   confirm: "Enter - Подтвердить",
 
   // Главное меню
@@ -16,17 +16,16 @@ export default {
 
   // Способности
   upHealth: "Купить 1 здоровье (1000 монет)",
-  getCoins: "Уничтожайте врагов, чтобы получать монеты. (1 враг - 3 монет)",
+  getCoins: "Уничтожайте врагов, чтобы получать монеты (1 враг - 3 монеты)",
 
   // Язык
-  english: "Английский",
+  english: "English",
   russian: "Русский",
-  reloadMessage: "Игра перезапустится после выбора языка",
 
   // Управление
   keyboardTitle: "Клавиатура",
-  keyboardMove: "W,S - Двигатся",
-  keyboardShoot: "Spacebar - Стрелять",
+  keyboardMove: "W,S или Стрелочка вверх / вниз - Двигаться",
+  keyboardShoot: "Пробел - Стрелять",
   // Конец игры
   gameOverTitle: "КОНЕЦ ИГРЫ",
   gameOverScore: "Ваш счет: ",
@@ -37,8 +36,8 @@ export default {
   achievementsUnlock: "Достижение разблокировано",
   // 0
   firstStep: "ПЕРВЫЕ ШАГИ",
-  firstStepDesc: "Достигнуть 1000 метров",
+  firstStepDesc: "Пролететь 1000 метров",
   // 1
-  trippleKill: "ТРОЙНОЕ УБИЙСТВО",
+  trippleKill: "ТРОЙНОЕ УСТРАНЕНИЕ",
   trippleKillDesc: "Уничтожить 3 противников",
 };

@@ -15,24 +15,34 @@ export default class GameManager {
     return 1;
   }
 
-  resize(canvas, context, canvasWidth, canvasHeight) {
-    canvasWidth = window.innerWidth;
-    canvasHeight = window.innerHeight;
+  resize(canvas, context) {
+    const windowWidth = window.innerWidth;
+    const windowHeight = window.innerHeight;
+    const aspectRatio = this.aspectRatio;
+    const dpr = window.devicePixelRatio || 1;
 
-    if (canvasHeight < canvasWidth / this.aspectRatio) {
-      canvasWidth = canvasHeight * this.aspectRatio;
-    } else canvasHeight = canvasWidth / this.aspectRatio;
+    let displayWidth = windowWidth;
+    let displayHeight = windowWidth / aspectRatio;
 
-    canvas.width = this.width;
-    canvas.height = this.height;
-    context.mozImageSmoothingEnabled = true;
-    context.webkitImageSmoothingEnabled = true;
-    context.imageSmoothingEnabled = true;
-    context.msImageSmoothingEnabled = true;
+    if (displayHeight > windowHeight) {
+      displayHeight = windowHeight;
+      displayWidth = displayHeight * aspectRatio;
+    }
 
+    canvas.width = displayWidth * dpr;
+    canvas.height = displayHeight * dpr;
+
+    canvas.style.width = `${displayWidth}px`;
+    canvas.style.height = `${displayHeight}px`;
+    canvas.style.position = "absolute";
     canvas.style.top = "50%";
     canvas.style.left = "50%";
-    canvas.style.width = `${canvasWidth}px`;
-    canvas.style.height = `${canvasHeight}px`;
+    canvas.style.transform = "translate(-50%, -50%)";
+
+    context.imageSmoothingEnabled = true;
+
+    const scaleX = (displayWidth * dpr) / this.width;
+    const scaleY = (displayHeight * dpr) / this.height;
+    context.setTransform(scaleX, 0, 0, scaleY, 0, 0);
   }
 }

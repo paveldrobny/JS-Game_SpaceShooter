@@ -1,4 +1,4 @@
-import { UI } from "./global.js";
+import { UI } from "./Global.js";
 
 export default class Buttons {
   constructor() {}

@@ -1,4 +1,4 @@
-import GameManager from "../../gameManager.js";
+import GameManager from "../../GameManager.js";
 
 export default class ButtonMain {
   constructor(i, text, UIIndex, posY) {
@@ -26,6 +26,7 @@ export default class ButtonMain {
       dot: {
         space: 30,
         radius: 5,
+        offsetY: 11,
       },
     };
 
@@ -45,29 +46,27 @@ export default class ButtonMain {
         UIButton.space * this.posY
     );
 
-    if (this.UIIndex == this.i) {
+    if (this.UIIndex === this.i) {
+      const centerX = gameManager.width / 2;
+      const textWidth = context.measureText(this.text).width;
+      const centerY =
+        gameManager.height / 2 +
+        this.i * UIButton.space -
+        UIButton.space * this.posY -
+        UIButton.dot.offsetY;
+
       context.beginPath();
       context.arc(
-        gameManager.width / 2 -
-          context.measureText(this.text).width / 2 -
-          UIButton.dot.space,
-        gameManager.height / 2 +
-          this.i * UIButton.space -
-          UIButton.space * this.posY -
-          15,
+        centerX - textWidth / 2 - UIButton.dot.space,
+        centerY,
         UIButton.dot.radius,
         0,
         2 * Math.PI,
         false
       );
       context.arc(
-        gameManager.width / 2 +
-          context.measureText(this.text).width / 2 +
-          UIButton.dot.space,
-        gameManager.height / 2 +
-          this.i * UIButton.space -
-          UIButton.space * this.posY -
-          15,
+        centerX + textWidth / 2 + UIButton.dot.space,
+        centerY,
         UIButton.dot.radius,
         0,
         2 * Math.PI,
